@@ -16,20 +16,19 @@
             line-height: 1.5; -webkit-font-smoothing: antialiased;
         }
         .app {
-            display: grid; grid-template-columns: 250px 1fr 300px;
+            display: grid; grid-template-columns: 240px 1fr 300px;
             max-width: 1440px; margin: 0 auto; min-height: 100vh;
         }
-        /* ---- SIDEBAR ---- */
         .sidebar {
-            padding: 22px 14px; position: sticky; top: 0;
+            padding: 20px 12px; position: sticky; top: 0;
             height: 100vh; overflow-y: auto;
             background: #ffffff; border-right: 1px solid #e6eeea;
-            display: flex; flex-direction: column; gap: 6px;
+            display: flex; flex-direction: column; gap: 4px;
         }
         .sidebar-logo {
             display: flex; align-items: center; gap: 8px;
             font-size: 1.35rem; font-weight: 800;
-            color: #0d1c2b; text-decoration: none; padding: 6px 12px; margin-bottom: 14px;
+            color: #0d1c2b; text-decoration: none; padding: 6px 12px; margin-bottom: 12px;
         }
         .sidebar-logo i { color: #0f6b4b; font-size: 1.5rem; }
         .nav-item {
@@ -37,7 +36,7 @@
             padding: 10px 14px; border-radius: 12px;
             text-decoration: none; color: #3f5568;
             font-weight: 500; font-size: 0.9rem; transition: all 0.2s;
-            position: relative;
+            position: relative; cursor: pointer;
         }
         .nav-item:hover { background: #f0f7f4; color: #0f6b4b; }
         .nav-item.active { background: #e9f3ef; color: #0f6b4b; font-weight: 600; }
@@ -65,25 +64,25 @@
         .user-info .name {
             font-size: 0.85rem; font-weight: 700; color: #0d1c2b;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            display: flex; align-items: center; gap: 4px;
         }
         .user-info .handle {
             font-size: 0.72rem; color: #8fa3b3;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        /* ---- MAIN FEED ---- */
-        .main-feed {
-            padding: 22px 26px; max-width: 640px; width: 100%; margin: 0 auto;
-        }
+        .main-feed { padding: 22px 26px; max-width: 640px; width: 100%; margin: 0 auto; }
         .feed-header {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 20px; gap: 14px;
+            margin-bottom: 18px; gap: 14px;
         }
         .feed-header h1 { font-size: 1.4rem; font-weight: 800; }
+        /* COMPOSER */
         .composer {
             background: white; border-radius: 18px; padding: 18px;
             margin-bottom: 18px; border: 1px solid #e6eeea;
+            box-shadow: 0 4px 12px -6px rgba(15, 107, 75, 0.06);
         }
-        .composer-top { display: flex; gap: 10px; margin-bottom: 14px; }
+        .composer-top { display: flex; gap: 10px; margin-bottom: 12px; }
         .composer-avatar {
             width: 42px; height: 42px; border-radius: 50%;
             background: linear-gradient(135deg, #0f6b4b, #4cd69a);
@@ -101,19 +100,103 @@
             border-color: #0f6b4b; background: white;
             box-shadow: 0 0 0 4px rgba(15, 107, 75, 0.06);
         }
+        .composer-tabs {
+            display: flex; gap: 6px; margin-bottom: 12px;
+            overflow-x: auto; padding-bottom: 2px;
+        }
+        .composer-tab {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 14px; border-radius: 20px;
+            border: 1.5px solid #e6eeea; background: #f9fbfa;
+            font-family: 'Inter', sans-serif; font-size: 0.78rem;
+            font-weight: 600; color: #5d6f7f; cursor: pointer;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .composer-tab:hover { border-color: #b8d5c9; color: #0f6b4b; }
+        .composer-tab.active {
+            background: #0f6b4b; border-color: #0f6b4b; color: white;
+            box-shadow: 0 4px 10px -4px rgba(15, 107, 75, 0.4);
+        }
+        .composer-fields {
+            display: none; background: #f7fbf9;
+            border: 1px solid #e6eeea; border-radius: 14px;
+            padding: 14px; margin-bottom: 12px;
+            animation: fadeIn 0.25s ease;
+        }
+        .composer-fields.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .field-row:last-child { margin-bottom: 0; }
+        .field-row.single { grid-template-columns: 1fr; }
+        .field-group label {
+            display: block; font-size: 0.75rem; font-weight: 600;
+            color: #5d6f7f; margin-bottom: 5px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .field-group input,
+        .field-group select,
+        .field-group textarea {
+            width: 100%; padding: 9px 12px;
+            border: 1.5px solid #e0e8e6; border-radius: 10px;
+            font-family: 'Inter', sans-serif; font-size: 0.88rem;
+            color: #0d1c2b; background: white;
+            outline: none; transition: all 0.2s;
+        }
+        .field-group input:focus,
+        .field-group select:focus,
+        .field-group textarea:focus {
+            border-color: #0f6b4b;
+            box-shadow: 0 0 0 3px rgba(15, 107, 75, 0.08);
+        }
+        .field-group textarea { resize: vertical; min-height: 60px; }
+        .poll-options { display: flex; flex-direction: column; gap: 8px; }
+        .poll-option-row { display: flex; gap: 8px; align-items: center; }
+        .poll-option-row input {
+            flex: 1; padding: 9px 12px;
+            border: 1.5px solid #e0e8e6; border-radius: 10px;
+            font-family: 'Inter', sans-serif; font-size: 0.88rem;
+            background: white; outline: none;
+        }
+        .poll-option-row input:focus { border-color: #0f6b4b; }
+        .poll-option-remove {
+            width: 32px; height: 32px; border-radius: 8px;
+            border: 1.5px solid #e0e8e6; background: white;
+            color: #8fa3b3; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; transition: all 0.2s;
+        }
+        .poll-option-remove:hover {
+            border-color: #e74c3c; color: #e74c3c; background: #fef5f5;
+        }
+        .poll-add-btn {
+            padding: 8px 14px; border-radius: 10px;
+            border: 1.5px dashed #b8d5c9; background: transparent;
+            color: #0f6b4b; font-family: 'Inter', sans-serif;
+            font-size: 0.82rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 6px;
+            margin-top: 4px;
+        }
+        .poll-add-btn:hover { background: #e9f3ef; border-style: solid; }
         .composer-actions {
             display: flex; align-items: center; justify-content: space-between;
             padding-top: 10px; border-top: 1px solid #f0f4f2;
         }
+        .composer-hint { font-size: 0.75rem; color: #8fa3b3; }
         .post-btn {
             padding: 9px 22px; border-radius: 30px; border: none;
             background: #0f6b4b; color: white;
             font-family: 'Inter', sans-serif; font-size: 0.86rem;
             font-weight: 700; cursor: pointer; transition: all 0.2s;
             box-shadow: 0 4px 12px -4px rgba(15, 107, 75, 0.4);
+            display: inline-flex; align-items: center; gap: 6px;
         }
         .post-btn:hover { background: #0b553b; transform: translateY(-1px); }
         .post-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        /* POST CARDS */
         .post-card {
             background: white; border-radius: 18px; padding: 18px;
             margin-bottom: 14px; border: 1px solid #e6eeea;
@@ -123,9 +206,7 @@
             box-shadow: 0 12px 28px -12px rgba(15, 107, 75, 0.12);
             border-color: #d0e2da;
         }
-        .post-header {
-            display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;
-        }
+        .post-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
         .post-avatar {
             width: 42px; height: 42px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
@@ -137,9 +218,140 @@
         .post-author .name { font-size: 0.9rem; font-weight: 700; }
         .post-author .handle { font-size: 0.75rem; color: #8fa3b3; }
         .post-time { font-size: 0.75rem; color: #8fa3b3; margin-top: 2px; }
+        .post-type-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 0.68rem; font-weight: 700;
+            padding: 3px 9px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-left: auto;
+        }
+        .post-type-badge.event { background: #e9f3ef; color: #0f6b4b; }
+        .post-type-badge.service { background: #fff3e0; color: #b45a1e; }
+        .post-type-badge.countdown { background: #fdecea; color: #c0392b; }
+        .post-type-badge.poll { background: #e8eefc; color: #2c5cc5; }
         .post-content {
             font-size: 0.93rem; color: #2f3e4e;
             line-height: 1.6; margin-bottom: 12px; white-space: pre-wrap;
+        }
+        .event-card {
+            background: linear-gradient(135deg, #f0f7f4, #e9f3ef);
+            border-radius: 14px; padding: 16px;
+            margin-bottom: 12px; border: 1px solid #d0e2da;
+            display: flex; gap: 14px; align-items: center;
+        }
+        .event-date {
+            background: white; border-radius: 12px;
+            padding: 10px 14px; text-align: center;
+            flex-shrink: 0; box-shadow: 0 4px 10px -6px rgba(15, 107, 75, 0.15);
+        }
+        .event-date .month {
+            font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px; color: #0f6b4b;
+        }
+        .event-date .day {
+            font-size: 1.5rem; font-weight: 800;
+            color: #0d1c2b; line-height: 1.1;
+        }
+        .event-info { flex: 1; min-width: 0; }
+        .event-info h4 { font-size: 0.98rem; font-weight: 700; margin-bottom: 4px; }
+        .event-info p {
+            font-size: 0.8rem; color: #5d6f7f;
+            display: flex; align-items: center; gap: 6px; margin-bottom: 2px;
+        }
+        .event-info p i { font-size: 0.72rem; color: #0f6b4b; }
+        .service-card {
+            background: linear-gradient(135deg, #fff8ee, #fff3e0);
+            border-radius: 14px; padding: 16px;
+            margin-bottom: 12px; border: 1px solid #f5d9b0;
+            display: flex; gap: 14px; align-items: center;
+        }
+        .service-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            background: white; display: flex; align-items: center;
+            justify-content: center; color: #b45a1e;
+            font-size: 1.3rem; flex-shrink: 0;
+            box-shadow: 0 4px 10px -6px rgba(180, 90, 30, 0.2);
+        }
+        .service-info { flex: 1; min-width: 0; }
+        .service-info h4 { font-size: 0.98rem; font-weight: 700; margin-bottom: 4px; }
+        .service-info p {
+            font-size: 0.8rem; color: #8a6b3f;
+            display: flex; align-items: center; gap: 6px; margin-bottom: 2px;
+        }
+        .service-info p i { font-size: 0.72rem; color: #b45a1e; }
+        .countdown-card {
+            background: linear-gradient(160deg, #1a2b3c, #0f2b1f);
+            border-radius: 14px; padding: 18px;
+            margin-bottom: 12px; color: white;
+            display: flex; align-items: center; gap: 16px;
+            overflow: hidden; position: relative;
+        }
+        .countdown-card::before {
+            content: ''; position: absolute; top: -40%; right: -10%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(76, 214, 154, 0.18) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .countdown-card .cd-icon {
+            width: 52px; height: 52px; border-radius: 14px;
+            background: rgba(76, 214, 154, 0.15);
+            display: flex; align-items: center; justify-content: center;
+            color: #4cd69a; font-size: 1.4rem; flex-shrink: 0;
+            position: relative; z-index: 2;
+        }
+        .countdown-card .cd-body { flex: 1; position: relative; z-index: 2; }
+        .countdown-card .cd-label {
+            font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: #4cd69a; margin-bottom: 6px;
+        }
+        .countdown-card .cd-number {
+            font-size: 1.8rem; font-weight: 900;
+            letter-spacing: -1px; line-height: 1.1;
+            color: white; font-variant-numeric: tabular-nums;
+        }
+        .countdown-card .cd-number span {
+            font-size: 0.9rem; font-weight: 600;
+            color: #7a9aaa; margin-left: 4px;
+        }
+        .countdown-card .cd-target {
+            font-size: 0.78rem; color: #7a9aaa;
+            margin-top: 4px; position: relative; z-index: 2;
+        }
+        .poll-card {
+            background: #f7fbf9; border-radius: 14px;
+            padding: 14px; margin-bottom: 12px;
+            border: 1px solid #e6eeea;
+        }
+        .poll-question {
+            font-size: 0.92rem; font-weight: 700;
+            color: #0d1c2b; margin-bottom: 10px;
+        }
+        .poll-option {
+            padding: 10px 14px; border-radius: 10px;
+            border: 1.5px solid #e0e8e6; background: white;
+            margin-bottom: 6px; cursor: pointer;
+            font-size: 0.88rem; color: #2f3e4e;
+            transition: all 0.2s; position: relative;
+            overflow: hidden;
+        }
+        .poll-option:hover { border-color: #0f6b4b; }
+        .poll-option.voted { border-color: #0f6b4b; background: #e9f3ef; color: #0f6b4b; font-weight: 600; }
+        .poll-option .poll-fill {
+            position: absolute; top: 0; left: 0; bottom: 0;
+            background: rgba(15, 107, 75, 0.08);
+            z-index: 0; transition: width 0.4s ease;
+        }
+        .poll-option .poll-label {
+            position: relative; z-index: 1;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .poll-option .poll-count {
+            font-size: 0.78rem; font-weight: 700; color: #0f6b4b;
+        }
+        .poll-total {
+            font-size: 0.75rem; color: #8fa3b3;
+            margin-top: 6px; text-align: right;
         }
         .post-actions {
             display: flex; align-items: center; gap: 4px;
@@ -155,12 +367,12 @@
         .action-btn:hover { background: #f0f7f4; color: #0f6b4b; }
         .action-btn.liked { color: #e74c3c; }
         .action-btn i { font-size: 0.95rem; }
-        /* ---- RIGHT SIDEBAR ---- */
+        /* RIGHT SIDEBAR */
         .right-sidebar {
-            padding: 22px 14px; position: sticky; top: 0;
+            padding: 20px 14px; position: sticky; top: 0;
             height: 100vh; overflow-y: auto;
             background: #ffffff; border-left: 1px solid #e6eeea;
-            display: flex; flex-direction: column; gap: 18px;
+            display: flex; flex-direction: column; gap: 16px;
         }
         .widget {
             background: #f7fbf9; border-radius: 18px;
@@ -168,41 +380,37 @@
         }
         .widget-header {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
         .widget-header h3 {
-            font-size: 0.9rem; font-weight: 700;
+            font-size: 0.88rem; font-weight: 700;
             display: flex; align-items: center; gap: 8px;
         }
         .widget-header h3 i { color: #0f6b4b; }
-        .widget-header a {
-            font-size: 0.75rem; color: #0f6b4b;
-            font-weight: 600; text-decoration: none;
-        }
         .countdown-widget {
             background: linear-gradient(160deg, #0d1c2b, #0f2b1f);
             border-radius: 18px; padding: 18px; color: white;
         }
         .countdown-widget .widget-label {
-            font-size: 0.65rem; font-weight: 700;
+            font-size: 0.62rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 1.5px;
             color: #4cd69a; margin-bottom: 12px;
             display: flex; align-items: center; gap: 6px;
         }
         .countdown-widget .big-number {
-            font-size: 2.2rem; font-weight: 900;
+            font-size: 2rem; font-weight: 900;
             letter-spacing: -1px; line-height: 1;
             color: #4cd69a; font-variant-numeric: tabular-nums;
         }
         .countdown-widget .big-number span {
-            font-size: 0.95rem; font-weight: 600;
+            font-size: 0.9rem; font-weight: 600;
             color: #7a9aaa; margin-left: 4px;
         }
         .countdown-widget .widget-sub {
-            font-size: 0.75rem; color: #7a9aaa; margin-top: 8px;
+            font-size: 0.72rem; color: #7a9aaa; margin-top: 8px;
         }
         .right-footer {
-            font-size: 0.7rem; color: #8fa3b3;
+            font-size: 0.68rem; color: #8fa3b3;
             line-height: 1.8; padding: 0 4px;
         }
         .right-footer a {
@@ -220,8 +428,61 @@
             text-align: center; padding: 30px;
             color: #8fa3b3; font-size: 0.85rem;
         }
+        /* ADMIN PANEL */
+        .admin-tab {
+            padding: 10px 18px; border: none; background: transparent;
+            font-family: 'Inter', sans-serif; font-size: 0.85rem;
+            font-weight: 600; color: #5d6f7f; cursor: pointer;
+            border-bottom: 2px solid transparent; transition: all 0.2s;
+            margin-bottom: -1px;
+        }
+        .admin-tab:hover { color: #0f6b4b; }
+        .admin-tab.active { color: #0f6b4b; border-bottom-color: #0f6b4b; }
+        .admin-user-row {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px; border-radius: 12px;
+            border: 1px solid #e6eeea; margin-bottom: 8px;
+            background: #f9fbfa;
+        }
+        .admin-user-row:hover { background: #f0f7f4; }
+        .admin-user-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: linear-gradient(135deg, #0f6b4b, #4cd69a);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+        }
+        .admin-user-info { flex: 1; min-width: 0; }
+        .admin-user-info .n { font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+        .admin-user-info .h { font-size: 0.75rem; color: #8fa3b3; }
+        .admin-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .admin-btn {
+            padding: 6px 12px; border-radius: 8px; border: 1.5px solid #e0e8e6;
+            background: white; color: #5d6f7f;
+            font-family: 'Inter', sans-serif; font-size: 0.75rem;
+            font-weight: 700; cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 4px;
+        }
+        .admin-btn:hover { border-color: #0f6b4b; color: #0f6b4b; }
+        .admin-btn.verify { background: #0f6b4b; color: white; border-color: #0f6b4b; }
+        .admin-btn.verify:hover { background: #0b553b; }
+        .admin-btn.danger:hover { border-color: #e74c3c; color: #e74c3c; background: #fef5f5; }
+        .admin-stat-card {
+            background: linear-gradient(135deg, #f0f7f4, #e9f3ef);
+            border-radius: 14px; padding: 18px;
+            border: 1px solid #d0e2da;
+        }
+        .admin-stat-card .num {
+            font-size: 2rem; font-weight: 800; color: #0f6b4b;
+            letter-spacing: -1px; line-height: 1;
+        }
+        .admin-stat-card .lbl {
+            font-size: 0.75rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: #5d6f7f; margin-top: 6px;
+        }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         @media (max-width: 1100px) {
-            .app { grid-template-columns: 70px 1fr 260px; }
+            .app { grid-template-columns: 68px 1fr 260px; }
             .sidebar-logo span, .nav-item span, .sidebar-user .user-info { display: none; }
             .sidebar-logo, .nav-item { justify-content: center; }
             .nav-item .badge { position: absolute; top: 4px; right: 4px; margin: 0; }
@@ -231,6 +492,7 @@
             .app { grid-template-columns: 1fr; }
             .sidebar, .right-sidebar { display: none; }
             .main-feed { padding: 16px; max-width: 100%; }
+            .field-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -244,12 +506,18 @@
             <a href="#" class="nav-item"><i class="fas fa-calendar-check"></i><span>Events</span></a>
             <a href="#" class="nav-item"><i class="fas fa-hand-holding-heart"></i><span>Service</span></a>
             <a href="#" class="nav-item"><i class="fas fa-bell"></i><span>Notifications</span></a>
+            <a href="#admin" class="nav-item" id="adminPanelLink" style="display:none;">
+                <i class="fas fa-shield-halved"></i><span>Admin</span>
+            </a>
             <div class="sidebar-divider"></div>
             <a href="#" class="nav-item"><i class="fas fa-gear"></i><span>Settings</span></a>
             <div class="sidebar-user" onclick="handleLogout()">
                 <div class="user-avatar" id="sidebarAvatar">--</div>
                 <div class="user-info">
-                    <div class="name" id="sidebarName">Loading...</div>
+                    <div class="name">
+                        <span id="sidebarName">Loading...</span>
+                        <span id="adminBadge" style="display:none;background:#0f6b4b;color:white;font-size:0.58rem;font-weight:700;padding:2px 5px;border-radius:8px;">ADMIN</span>
+                    </div>
                     <div class="handle" id="sidebarHandle">@—</div>
                 </div>
                 <i class="fas fa-arrow-right-from-bracket" style="color:#8fa3b3;font-size:0.8rem;"></i>
@@ -257,18 +525,136 @@
         </aside>
 
         <main class="main-feed">
-            <div class="feed-header">
-                <h1>Home</h1>
-            </div>
+            <div class="feed-header"><h1>Home</h1></div>
 
             <div class="composer">
                 <div class="composer-top">
                     <div class="composer-avatar" id="composerAvatar">--</div>
                     <textarea class="composer-input" id="composerInput" placeholder="Share an update with your community..." rows="2"></textarea>
                 </div>
+
+                <div class="composer-tabs">
+                    <button class="composer-tab active" data-type="update"><i class="fas fa-pen"></i> Update</button>
+                    <button class="composer-tab" data-type="event"><i class="fas fa-calendar-plus"></i> Event</button>
+                    <button class="composer-tab" data-type="service"><i class="fas fa-hand-holding-heart"></i> Service</button>
+                    <button class="composer-tab" data-type="countdown"><i class="fas fa-hourglass-half"></i> Countdown</button>
+                    <button class="composer-tab" data-type="poll"><i class="fas fa-poll"></i> Poll</button>
+                </div>
+
+                <div class="composer-fields active" data-type="update">
+                    <div class="field-group">
+                        <label>Optional image URL</label>
+                        <input type="url" id="updateImage" placeholder="https://...">
+                    </div>
+                </div>
+
+                <div class="composer-fields" data-type="event">
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label>Event title</label>
+                            <input type="text" id="eventTitle" placeholder="Beach cleanup">
+                        </div>
+                        <div class="field-group">
+                            <label>Date</label>
+                            <input type="date" id="eventDate">
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label>Time</label>
+                            <input type="time" id="eventTime">
+                        </div>
+                        <div class="field-group">
+                            <label>Location</label>
+                            <input type="text" id="eventLocation" placeholder="Ocean Beach, SF">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="composer-fields" data-type="service">
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label>Service title</label>
+                            <input type="text" id="serviceTitle" placeholder="Food bank volunteers">
+                        </div>
+                        <div class="field-group">
+                            <label>Date</label>
+                            <input type="date" id="serviceDate">
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label>Shift time</label>
+                            <input type="text" id="serviceTime" placeholder="2:00 PM – 6:00 PM">
+                        </div>
+                        <div class="field-group">
+                            <label>Location</label>
+                            <input type="text" id="serviceLocation" placeholder="SF-Marin Food Bank">
+                        </div>
+                    </div>
+                    <div class="field-row single">
+                        <div class="field-group">
+                            <label>Volunteers needed</label>
+                            <input type="number" id="serviceSlots" placeholder="10" min="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="composer-fields" data-type="countdown">
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label>Countdown title</label>
+                            <input type="text" id="countdownTitle" placeholder="Days until our tree planting">
+                        </div>
+                        <div class="field-group">
+                            <label>Target date</label>
+                            <input type="date" id="countdownTarget">
+                        </div>
+                    </div>
+                    <div class="field-row single">
+                        <div class="field-group">
+                            <label>Icon</label>
+                            <select id="countdownIcon">
+                                <option value="fa-hourglass-half">⏳ Hourglass</option>
+                                <option value="fa-seedling">🌱 Seedling</option>
+                                <option value="fa-tree">🌳 Tree</option>
+                                <option value="fa-earth-americas">🌎 Earth</option>
+                                <option value="fa-fire">🔥 Fire</option>
+                                <option value="fa-water">💧 Water</option>
+                                <option value="fa-sun">☀️ Sun</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="composer-fields" data-type="poll">
+                    <div class="field-row single">
+                        <div class="field-group">
+                            <label>Poll question</label>
+                            <input type="text" id="pollQuestion" placeholder="Which day works best?">
+                        </div>
+                    </div>
+                    <div class="field-row single">
+                        <div class="field-group">
+                            <label>Options</label>
+                            <div class="poll-options" id="pollOptions">
+                                <div class="poll-option-row">
+                                    <input type="text" placeholder="Option 1">
+                                    <button class="poll-option-remove" onclick="removePollOption(this)" title="Remove"><i class="fas fa-times"></i></button>
+                                </div>
+                                <div class="poll-option-row">
+                                    <input type="text" placeholder="Option 2">
+                                    <button class="poll-option-remove" onclick="removePollOption(this)" title="Remove"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <button class="poll-add-btn" onclick="addPollOption()"><i class="fas fa-plus"></i> Add option</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="composer-actions">
-                    <div></div>
-                    <button class="post-btn" id="postBtn" disabled>Post</button>
+                    <span class="composer-hint" id="composerHint">Share an update</span>
+                    <button class="post-btn" id="postBtn" disabled><i class="fas fa-paper-plane"></i> Post</button>
                 </div>
             </div>
 
@@ -296,12 +682,35 @@
         </aside>
     </div>
 
+    <!-- ADMIN PANEL MODAL -->
+    <div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(13,28,43,0.7);backdrop-filter:blur(6px);z-index:200;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:white;border-radius:24px;width:100%;max-width:720px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 40px 80px -20px rgba(0,0,0,0.4);">
+            <div style="padding:22px 26px;border-bottom:1px solid #e6eeea;display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                    <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-0.5px;display:flex;align-items:center;gap:8px;">
+                        <i class="fas fa-shield-halved" style="color:#0f6b4b;"></i> Admin Panel
+                    </h2>
+                    <p style="font-size:0.82rem;color:#5d6f7f;margin-top:2px;">Manage users, posts, and community health.</p>
+                </div>
+                <button onclick="closeAdminPanel()" style="width:36px;height:36px;border-radius:10px;border:none;background:#f0f7f4;color:#5d6f7f;cursor:pointer;font-size:1rem;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div style="display:flex;gap:6px;padding:14px 26px 0;border-bottom:1px solid #e6eeea;">
+                <button class="admin-tab active" data-tab="users" onclick="switchAdminTab('users')">Users</button>
+                <button class="admin-tab" data-tab="posts" onclick="switchAdminTab('posts')">Posts</button>
+                <button class="admin-tab" data-tab="stats" onclick="switchAdminTab('stats')">Stats</button>
+            </div>
+            <div id="adminBody" style="padding:20px 26px;overflow-y:auto;flex:1;"></div>
+        </div>
+    </div>
+
     <script type="module">
         import {
             auth, db,
-            doc, getDoc, setDoc, addDoc, collection,
-            query, orderBy, limit, onSnapshot, serverTimestamp,
-            updateDoc, deleteDoc, arrayUnion, arrayRemove, increment
+            doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, collection,
+            query, orderBy, limit, onSnapshot, getDocs, where, serverTimestamp,
+            arrayUnion, arrayRemove, increment
         } from "./firebase-config.js";
         import {
             onAuthStateChanged,
@@ -311,6 +720,8 @@
         let currentUser = null;
         let currentProfile = null;
         let postsUnsub = null;
+        let activePostType = 'update';
+        let isAdmin = false;
 
         // ---------- AUTH GUARD ----------
         onAuthStateChanged(auth, async (user) => {
@@ -319,7 +730,6 @@
                 return;
             }
             currentUser = user;
-
             try {
                 const snap = await getDoc(doc(db, "users", user.uid));
                 if (!snap.exists() || !snap.data().profileComplete) {
@@ -327,9 +737,23 @@
                     return;
                 }
                 currentProfile = snap.data();
+                isAdmin = currentProfile.isAdmin === true || currentProfile.role === 'owner';
+
                 renderUser();
                 renderProfileSummary();
                 subscribeToPosts();
+
+                if (isAdmin) {
+                    const adminLink = document.getElementById('adminPanelLink');
+                    if (adminLink) {
+                        adminLink.style.display = 'flex';
+                        adminLink.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            openAdminPanel();
+                        });
+                    }
+                    document.getElementById('adminBadge').style.display = 'inline-block';
+                }
             } catch (err) {
                 console.error("Profile load error:", err);
                 window.location.replace("/register");
@@ -343,9 +767,8 @@
 
         function renderUser() {
             const name = currentProfile.displayName || currentUser.displayName || "Uproot User";
-            const handle = "@" + (currentProfile.email ? currentProfile.email.split("@")[0] : "user");
+            const handle = "@" + (currentProfile.username || "user");
             const initials = initialsFrom(name);
-
             document.getElementById('sidebarName').textContent = name;
             document.getElementById('sidebarHandle').textContent = handle;
             document.getElementById('sidebarAvatar').textContent = initials;
@@ -357,15 +780,17 @@
             const interests = (p.interests || []).slice(0, 5).map(i =>
                 `<span style="display:inline-block;background:#e9f3ef;color:#0f6b4b;font-size:0.72rem;font-weight:600;padding:3px 9px;border-radius:20px;margin:2px 3px 2px 0;">${escapeHtml(i)}</span>`
             ).join('') || '<em>No interests yet</em>';
-
             const location = p.location
-                ? `${p.location.city || ""}, ${p.location.state || ""}`
+                ? `${p.location.city || ""}${p.location.state ? ", " + p.location.state : ""}`
                 : "—";
-
+            const verifiedBadge = p.verified
+                ? ' <i class="fas fa-circle-check" style="color:#0f6b4b;font-size:0.85rem;"></i>'
+                : '';
             document.getElementById('profileSummary').innerHTML = `
-                <div style="margin-bottom:10px;"><strong style="color:#0d1c2b;">${escapeHtml(p.displayName || "")}</strong></div>
+                <div style="margin-bottom:10px;"><strong style="color:#0d1c2b;">${escapeHtml(p.displayName || "")}</strong>${verifiedBadge}</div>
+                <div style="margin-bottom:10px;font-size:0.8rem;color:#8fa3b3;">@${escapeHtml(p.username || "—")}</div>
                 <div style="margin-bottom:10px;font-size:0.8rem;"><i class="fas fa-location-dot" style="color:#0f6b4b;margin-right:6px;"></i>${escapeHtml(location)}</div>
-                <div style="margin-bottom:6px;font-size:0.78rem;color:#8fa3b3;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Interests</div>
+                <div style="margin-bottom:6px;font-size:0.72rem;color:#8fa3b3;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Interests</div>
                 <div>${interests}</div>
             `;
         }
@@ -377,46 +802,177 @@
             })[c]);
         }
 
-        // ---------- POSTS ----------
+        // ---------- COMPOSER ----------
         const composerInput = document.getElementById('composerInput');
         const postBtn = document.getElementById('postBtn');
+        const composerHint = document.getElementById('composerHint');
 
-        composerInput.addEventListener('input', () => {
-            postBtn.disabled = composerInput.value.trim().length === 0;
+        const hintMap = {
+            update: 'Share an update',
+            event: 'Post an event',
+            service: 'Post a service opportunity',
+            countdown: 'Start a countdown',
+            poll: 'Ask your community'
+        };
+
+        document.querySelectorAll('.composer-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const type = tab.dataset.type;
+                activePostType = type;
+                document.querySelectorAll('.composer-tab').forEach(t => t.classList.toggle('active', t === tab));
+                document.querySelectorAll('.composer-fields').forEach(f => f.classList.toggle('active', f.dataset.type === type));
+                composerHint.textContent = hintMap[type] || '';
+                updatePostBtn();
+            });
         });
 
-        postBtn.addEventListener('click', async () => {
+        composerInput.addEventListener('input', updatePostBtn);
+
+        function updatePostBtn() {
+            let canPost = false;
             const content = composerInput.value.trim();
-            if (!content || !currentUser) return;
+            if (activePostType === 'update') {
+                canPost = content.length > 0;
+            } else if (activePostType === 'event') {
+                canPost = content.length > 0
+                    && document.getElementById('eventTitle').value.trim()
+                    && document.getElementById('eventDate').value;
+            } else if (activePostType === 'service') {
+                canPost = content.length > 0
+                    && document.getElementById('serviceTitle').value.trim()
+                    && document.getElementById('serviceDate').value;
+            } else if (activePostType === 'countdown') {
+                canPost = content.length > 0
+                    && document.getElementById('countdownTitle').value.trim()
+                    && document.getElementById('countdownTarget').value;
+            } else if (activePostType === 'poll') {
+                const options = getPollOptions().filter(o => o.length > 0);
+                canPost = content.length > 0
+                    && document.getElementById('pollQuestion').value.trim()
+                    && options.length >= 2;
+            }
+            postBtn.disabled = !canPost;
+        }
+
+        ['eventTitle','eventDate','eventTime','eventLocation',
+         'serviceTitle','serviceDate','serviceTime','serviceLocation','serviceSlots',
+         'countdownTitle','countdownTarget','countdownIcon',
+         'pollQuestion'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', updatePostBtn);
+                el.addEventListener('change', updatePostBtn);
+            }
+        });
+
+        function getPollOptions() {
+            return Array.from(document.querySelectorAll('#pollOptions .poll-option-row input'))
+                .map(i => i.value.trim());
+        }
+        window.addPollOption = function () {
+            const container = document.getElementById('pollOptions');
+            if (container.children.length >= 6) return alert("Max 6 options.");
+            const row = document.createElement('div');
+            row.className = 'poll-option-row';
+            row.innerHTML = `
+                <input type="text" placeholder="Option ${container.children.length + 1}">
+                <button class="poll-option-remove" onclick="removePollOption(this)" title="Remove"><i class="fas fa-times"></i></button>
+            `;
+            container.appendChild(row);
+            row.querySelector('input').addEventListener('input', updatePostBtn);
+            updatePostBtn();
+        };
+        window.removePollOption = function (btn) {
+            const container = document.getElementById('pollOptions');
+            if (container.children.length <= 2) return alert("At least 2 options required.");
+            btn.closest('.poll-option-row').remove();
+            updatePostBtn();
+        };
+        document.querySelectorAll('#pollOptions .poll-option-row input').forEach(i => {
+            i.addEventListener('input', updatePostBtn);
+        });
+
+        // ---------- SUBMIT POST ----------
+        postBtn.addEventListener('click', async () => {
+            if (!currentUser || postBtn.disabled) return;
+            const content = composerInput.value.trim();
+            const post = {
+                type: activePostType,
+                content,
+                authorId: currentUser.uid,
+                authorName: currentProfile.displayName || currentUser.displayName || "Uproot User",
+                authorUsername: currentProfile.username || "user",
+                authorVerified: currentProfile.verified === true,
+                createdAt: serverTimestamp(),
+                likes: []
+            };
+
+            if (activePostType === 'event') {
+                post.event = {
+                    title: document.getElementById('eventTitle').value.trim(),
+                    date: document.getElementById('eventDate').value,
+                    time: document.getElementById('eventTime').value || null,
+                    location: document.getElementById('eventLocation').value.trim() || null
+                };
+            } else if (activePostType === 'service') {
+                post.service = {
+                    title: document.getElementById('serviceTitle').value.trim(),
+                    date: document.getElementById('serviceDate').value,
+                    time: document.getElementById('serviceTime').value.trim() || null,
+                    location: document.getElementById('serviceLocation').value.trim() || null,
+                    slots: parseInt(document.getElementById('serviceSlots').value) || null,
+                    volunteers: []
+                };
+            } else if (activePostType === 'countdown') {
+                post.countdown = {
+                    title: document.getElementById('countdownTitle').value.trim(),
+                    target: document.getElementById('countdownTarget').value,
+                    icon: document.getElementById('countdownIcon').value
+                };
+            } else if (activePostType === 'poll') {
+                const options = getPollOptions().filter(o => o.length > 0);
+                post.poll = {
+                    question: document.getElementById('pollQuestion').value.trim(),
+                    options: options.map(text => ({ text, votes: [] }))
+                };
+            } else if (activePostType === 'update') {
+                const img = document.getElementById('updateImage').value.trim();
+                if (img) post.imageUrl = img;
+            }
 
             postBtn.disabled = true;
-            postBtn.textContent = 'Posting...';
+            postBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
 
             try {
-                await addDoc(collection(db, "posts"), {
-                    content,
-                    authorId: currentUser.uid,
-                    authorName: currentProfile.displayName || currentUser.displayName || "Uproot User",
-                    createdAt: serverTimestamp(),
-                    likes: []
-                });
+                await addDoc(collection(db, "posts"), post);
                 composerInput.value = '';
-                postBtn.textContent = 'Post';
+                document.getElementById('eventTitle').value = '';
+                document.getElementById('eventDate').value = '';
+                document.getElementById('eventTime').value = '';
+                document.getElementById('eventLocation').value = '';
+                document.getElementById('serviceTitle').value = '';
+                document.getElementById('serviceDate').value = '';
+                document.getElementById('serviceTime').value = '';
+                document.getElementById('serviceLocation').value = '';
+                document.getElementById('serviceSlots').value = '';
+                document.getElementById('countdownTitle').value = '';
+                document.getElementById('countdownTarget').value = '';
+                document.getElementById('pollQuestion').value = '';
+                document.getElementById('updateImage').value = '';
+                document.querySelectorAll('#pollOptions .poll-option-row input').forEach(i => i.value = '');
+                document.querySelector('.composer-tab[data-type="update"]').click();
+                postBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Post';
             } catch (err) {
-                console.error(err);
-                alert("Failed to post. Check your Firestore rules.");
-                postBtn.textContent = 'Post';
+                console.error("Post failed:", err);
+                alert("Failed to post. Check your Firestore rules and try again.");
+                postBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Post';
                 postBtn.disabled = false;
             }
         });
 
+        // ---------- FEED ----------
         function subscribeToPosts() {
-            const q = query(
-                collection(db, "posts"),
-                orderBy("createdAt", "desc"),
-                limit(50)
-            );
-
+            const q = query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(50));
             postsUnsub = onSnapshot(q, (snapshot) => {
                 const feed = document.getElementById('feed');
                 if (snapshot.empty) {
@@ -427,10 +983,10 @@
                         </div>`;
                     return;
                 }
-
                 const posts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
                 feed.innerHTML = posts.map(renderPost).join('');
                 attachPostHandlers();
+                startCountdownTickers();
             }, (err) => {
                 console.error("Posts listener error:", err);
                 document.getElementById('feed').innerHTML = `
@@ -447,6 +1003,30 @@
             const liked = currentUser && likes.includes(currentUser.uid);
             const time = formatTime(post.createdAt);
             const safeContent = escapeHtml(post.content).replace(/\n/g, "<br>");
+            const type = post.type || 'update';
+
+            let typeBadge = '';
+            let body = `<div class="post-content">${safeContent}</div>`;
+
+            if (type === 'event' && post.event) {
+                typeBadge = `<span class="post-type-badge event"><i class="fas fa-calendar-check"></i> Event</span>`;
+                body += renderEventCard(post.event);
+            } else if (type === 'service' && post.service) {
+                typeBadge = `<span class="post-type-badge service"><i class="fas fa-hand-holding-heart"></i> Service</span>`;
+                body += renderServiceCard(post.service, post.id);
+            } else if (type === 'countdown' && post.countdown) {
+                typeBadge = `<span class="post-type-badge countdown"><i class="fas fa-hourglass-half"></i> Countdown</span>`;
+                body += renderCountdownCard(post.countdown, post.id);
+            } else if (type === 'poll' && post.poll) {
+                typeBadge = `<span class="post-type-badge poll"><i class="fas fa-poll"></i> Poll</span>`;
+                body += renderPollCard(post.poll, post.id);
+            } else if (post.imageUrl) {
+                body += `<div style="border-radius:14px;overflow:hidden;margin-bottom:12px;border:1px solid #e6eeea;"><img src="${escapeHtml(post.imageUrl)}" alt="" style="width:100%;display:block;" onerror="this.parentElement.style.display='none'"></div>`;
+            }
+
+            const verified = post.authorVerified
+                ? '<i class="fas fa-circle-check" style="color:#0f6b4b;font-size:0.72rem;"></i>'
+                : '';
 
             return `
                 <article class="post-card" data-post-id="${post.id}">
@@ -455,25 +1035,145 @@
                         <div class="post-meta">
                             <div class="post-author">
                                 <span class="name">${escapeHtml(post.authorName || "Uproot User")}</span>
+                                ${verified}
+                                <span class="handle">· ${time}</span>
                             </div>
-                            <div class="post-time">${time}</div>
                         </div>
+                        ${typeBadge}
                     </div>
-                    <div class="post-content">${safeContent}</div>
+                    ${body}
                     <div class="post-actions">
                         <button class="action-btn like-btn ${liked ? 'liked' : ''}" data-post-id="${post.id}">
                             <i class="${liked ? 'fas' : 'far'} fa-heart"></i>
                             <span class="count">${likes.length}</span>
                         </button>
-                        <button class="action-btn">
-                            <i class="far fa-comment"></i>
-                        </button>
-                        <button class="action-btn">
-                            <i class="far fa-share-from-square"></i>
-                        </button>
+                        <button class="action-btn"><i class="far fa-comment"></i></button>
+                        <button class="action-btn"><i class="far fa-share-from-square"></i></button>
                     </div>
                 </article>`;
         }
+
+        function renderEventCard(ev) {
+            const d = ev.date ? new Date(ev.date + 'T00:00:00') : null;
+            const month = d ? d.toLocaleString('en-US', { month: 'short' }) : '—';
+            const day = d ? d.getDate() : '—';
+            const timeStr = ev.time ? formatTime12(ev.time) : '';
+            return `
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="month">${month}</div>
+                        <div class="day">${day}</div>
+                    </div>
+                    <div class="event-info">
+                        <h4>${escapeHtml(ev.title || 'Event')}</h4>
+                        ${timeStr ? `<p><i class="fas fa-clock"></i> ${escapeHtml(timeStr)}</p>` : ''}
+                        ${ev.location ? `<p><i class="fas fa-location-dot"></i> ${escapeHtml(ev.location)}</p>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderServiceCard(sv, postId) {
+            const d = sv.date ? new Date(sv.date + 'T00:00:00') : null;
+            const dateStr = d ? d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : '';
+            const volunteers = Array.isArray(sv.volunteers) ? sv.volunteers : [];
+            const joined = currentUser && volunteers.includes(currentUser.uid);
+            return `
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <div class="service-info">
+                        <h4>${escapeHtml(sv.title || 'Service Opportunity')}</h4>
+                        ${dateStr ? `<p><i class="fas fa-calendar"></i> ${escapeHtml(dateStr)}${sv.time ? ' · ' + escapeHtml(sv.time) : ''}</p>` : ''}
+                        ${sv.location ? `<p><i class="fas fa-location-dot"></i> ${escapeHtml(sv.location)}</p>` : ''}
+                        <p><i class="fas fa-users"></i> ${volunteers.length}${sv.slots ? ' / ' + sv.slots : ''} volunteers</p>
+                    </div>
+                </div>
+                <button style="width:100%;padding:9px;border-radius:10px;border:1.5px solid ${joined ? '#0f6b4b' : '#d0e2da'};background:${joined ? '#e9f3ef' : 'white'};color:${joined ? '#0f6b4b' : '#2f3e4e'};font-family:Inter,sans-serif;font-weight:600;font-size:0.82rem;cursor:pointer;margin-bottom:12px;"
+                    onclick="toggleServiceVolunteer('${postId}', ${joined})">
+                    ${joined ? '✓ You\'re volunteering' : '+ Volunteer'}
+                </button>
+            `;
+        }
+
+        function renderCountdownCard(cd, postId) {
+            return `
+                <div class="countdown-card" data-countdown-post="${postId}" data-target="${escapeHtml(cd.target)}">
+                    <div class="cd-icon"><i class="fas ${escapeHtml(cd.icon || 'fa-hourglass-half')}"></i></div>
+                    <div class="cd-body">
+                        <div class="cd-label">${escapeHtml(cd.title || 'Countdown')}</div>
+                        <div class="cd-number" data-cd-number>—<span>days</span></div>
+                        <div class="cd-target" data-cd-target>Target: ${formatDateLong(cd.target)}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPollCard(poll, postId) {
+            const options = Array.isArray(poll.options) ? poll.options : [];
+            const totalVotes = options.reduce((sum, o) => sum + (Array.isArray(o.votes) ? o.votes.length : 0), 0);
+            const userVote = options.findIndex(o => currentUser && Array.isArray(o.votes) && o.votes.includes(currentUser.uid));
+
+            const optionsHtml = options.map((o, i) => {
+                const votes = Array.isArray(o.votes) ? o.votes.length : 0;
+                const pct = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
+                const voted = userVote === i;
+                return `
+                    <div class="poll-option ${voted ? 'voted' : ''}" onclick="votePoll('${postId}', ${i})">
+                        <div class="poll-fill" style="width:${pct}%"></div>
+                        <div class="poll-label">
+                            <span>${escapeHtml(o.text)}${voted ? ' ✓' : ''}</span>
+                            <span class="poll-count">${pct}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="poll-card">
+                    <div class="poll-question">${escapeHtml(poll.question)}</div>
+                    ${optionsHtml}
+                    <div class="poll-total">${totalVotes} vote${totalVotes === 1 ? '' : 's'}</div>
+                </div>
+            `;
+        }
+
+        window.votePoll = async function (postId, optionIndex) {
+            if (!currentUser) return;
+            const postRef = doc(db, "posts", postId);
+            const snap = await getDoc(postRef);
+            if (!snap.exists()) return;
+            const post = snap.data();
+            if (!post.poll || !Array.isArray(post.poll.options)) return;
+
+            const options = post.poll.options.map((o, i) => {
+                let votes = Array.isArray(o.votes) ? o.votes : [];
+                votes = votes.filter(uid => uid !== currentUser.uid);
+                if (i === optionIndex) votes.push(currentUser.uid);
+                return { ...o, votes };
+            });
+
+            try {
+                await updateDoc(postRef, { "poll.options": options });
+            } catch (err) {
+                console.error("Vote failed:", err);
+            }
+        };
+
+        window.toggleServiceVolunteer = async function (postId, isJoined) {
+            if (!currentUser) return;
+            const postRef = doc(db, "posts", postId);
+            try {
+                const snap = await getDoc(postRef);
+                const sv = snap.data().service || {};
+                const volunteers = Array.isArray(sv.volunteers) ? sv.volunteers : [];
+                const updated = isJoined
+                    ? volunteers.filter(uid => uid !== currentUser.uid)
+                    : [...volunteers, currentUser.uid];
+                await updateDoc(postRef, { "service.volunteers": updated });
+            } catch (err) {
+                console.error("Volunteer toggle failed:", err);
+            }
+        };
 
         function attachPostHandlers() {
             document.querySelectorAll('.like-btn').forEach(btn => {
@@ -484,7 +1184,6 @@
                     if (!snap.exists()) return;
                     const likes = snap.data().likes || [];
                     const isLiked = likes.includes(currentUser.uid);
-
                     try {
                         await updateDoc(postRef, {
                             likes: isLiked ? arrayRemove(currentUser.uid) : arrayUnion(currentUser.uid)
@@ -493,6 +1192,26 @@
                         console.error("Like failed:", err);
                     }
                 });
+            });
+        }
+
+        function startCountdownTickers() {
+            document.querySelectorAll('[data-countdown-post]').forEach(el => {
+                if (el.dataset.tickerStarted) return;
+                el.dataset.tickerStarted = "true";
+                const target = el.dataset.target;
+                const numberEl = el.querySelector('[data-cd-number]');
+                if (!target || !numberEl) return;
+                function tick() {
+                    const t = new Date(target + 'T00:00:00').getTime();
+                    const diff = t - Date.now();
+                    if (diff <= 0) { numberEl.innerHTML = 'NOW'; return; }
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    numberEl.innerHTML = `${days}<span>d ${hours}h</span>`;
+                }
+                tick();
+                setInterval(tick, 60000);
             });
         }
 
@@ -506,6 +1225,18 @@
             if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
             return d.toLocaleDateString();
         }
+        function formatTime12(t) {
+            if (!t) return '';
+            const [h, m] = t.split(':').map(Number);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const h12 = h % 12 || 12;
+            return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+        }
+        function formatDateLong(dateStr) {
+            if (!dateStr) return '—';
+            const d = new Date(dateStr + 'T00:00:00');
+            return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        }
 
         // ---------- LOGOUT ----------
         window.handleLogout = async function () {
@@ -515,7 +1246,7 @@
             window.location.replace("/login");
         };
 
-        // ---------- COUNTDOWN ----------
+        // ---------- WIDGET COUNTDOWN ----------
         function updateCountdown() {
             const target = new Date('2030-01-01T00:00:00').getTime();
             const distance = target - Date.now();
@@ -528,6 +1259,150 @@
         }
         updateCountdown();
         setInterval(updateCountdown, 60000);
+
+        // ---------- ADMIN PANEL ----------
+        window.openAdminPanel = async function () {
+            if (!isAdmin) return;
+            document.getElementById('adminPanel').style.display = 'flex';
+            document.getElementById('adminBody').innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+            await loadAdminTab('users');
+        };
+        window.closeAdminPanel = function () {
+            document.getElementById('adminPanel').style.display = 'none';
+        };
+        window.switchAdminTab = async function (tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+            await loadAdminTab(tab);
+        };
+
+        async function loadAdminTab(tab) {
+            const body = document.getElementById('adminBody');
+            body.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+            try {
+                if (tab === 'users') await renderAdminUsers(body);
+                else if (tab === 'posts') await renderAdminPosts(body);
+                else if (tab === 'stats') await renderAdminStats(body);
+            } catch (err) {
+                console.error(err);
+                body.innerHTML = `<div class="empty-state"><i class="fas fa-triangle-exclamation"></i><p>Failed to load. Check admin permissions.</p></div>`;
+            }
+        }
+
+        async function renderAdminUsers(body) {
+            const snap = await getDocs(query(collection(db, "users"), orderBy("createdAt", "desc"), limit(50)));
+            if (snap.empty) { body.innerHTML = `<div class="empty-state"><i class="fas fa-user"></i><p>No users yet.</p></div>`; return; }
+            const rows = snap.docs.map(d => {
+                const u = d.data();
+                const initials = initialsFrom(u.displayName || u.firstName || "User");
+                const verified = u.verified === true;
+                const isMe = d.id === currentUser.uid;
+                return `
+                    <div class="admin-user-row">
+                        <div class="admin-user-avatar">${initials}</div>
+                        <div class="admin-user-info">
+                            <div class="n">
+                                ${escapeHtml(u.displayName || u.firstName || "User")}
+                                ${verified ? '<i class="fas fa-circle-check" style="color:#0f6b4b;font-size:0.75rem;"></i>' : ''}
+                                ${u.role === 'owner' ? '<span style="background:#0f6b4b;color:white;font-size:0.55rem;font-weight:700;padding:2px 5px;border-radius:6px;">OWNER</span>' : ''}
+                            </div>
+                            <div class="h">@${escapeHtml(u.username || "—")} · ${escapeHtml(u.email || "")}</div>
+                        </div>
+                        <div class="admin-actions">
+                            ${isMe ? '' : (verified
+                                ? `<button class="admin-btn" onclick="unverifyUser('${d.id}')"><i class="fas fa-xmark"></i> Unverify</button>`
+                                : `<button class="admin-btn verify" onclick="verifyUser('${d.id}')"><i class="fas fa-check"></i> Verify</button>`
+                            )}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            body.innerHTML = `<div style="margin-bottom:12px;font-size:0.8rem;color:#8fa3b3;">${snap.size} user${snap.size === 1 ? '' : 's'}</div>${rows}`;
+        }
+
+        async function renderAdminPosts(body) {
+            const snap = await getDocs(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(50)));
+            if (snap.empty) { body.innerHTML = `<div class="empty-state"><i class="fas fa-seedling"></i><p>No posts yet.</p></div>`; return; }
+            const rows = snap.docs.map(d => {
+                const p = d.data();
+                const snippet = (p.content || "").slice(0, 100) + ((p.content || "").length > 100 ? "..." : "");
+                return `
+                    <div class="admin-user-row">
+                        <div class="admin-user-info">
+                            <div class="n">${escapeHtml(p.authorName || "User")}</div>
+                            <div class="h">${escapeHtml(p.type || 'update')} · ${escapeHtml(snippet)}</div>
+                        </div>
+                        <div class="admin-actions">
+                            <button class="admin-btn danger" onclick="deletePostAdmin('${d.id}')"><i class="fas fa-trash"></i> Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            body.innerHTML = `<div style="margin-bottom:12px;font-size:0.8rem;color:#8fa3b3;">${snap.size} post${snap.size === 1 ? '' : 's'}</div>${rows}`;
+        }
+
+        async function renderAdminStats(body) {
+            const [usersSnap, postsSnap] = await Promise.all([
+                getDocs(collection(db, "users")),
+                getDocs(collection(db, "posts"))
+            ]);
+            const verifiedCount = usersSnap.docs.filter(d => d.data().verified === true).length;
+            body.innerHTML = `
+                <div class="admin-grid">
+                    <div class="admin-stat-card">
+                        <div class="num">${usersSnap.size}</div>
+                        <div class="lbl">Total Users</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="num">${verifiedCount}</div>
+                        <div class="lbl">Verified Users</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="num">${postsSnap.size}</div>
+                        <div class="lbl">Total Posts</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="num">${Math.max(0, usersSnap.size - verifiedCount)}</div>
+                        <div class="lbl">Unverified</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.verifyUser = async function (uid) {
+            if (!isAdmin) return;
+            try {
+                await updateDoc(doc(db, "users", uid), { verified: true });
+                await loadAdminTab('users');
+            } catch (err) {
+                console.error(err);
+                alert("Failed to verify. Check your Firestore rules.");
+            }
+        };
+        window.unverifyUser = async function (uid) {
+            if (!isAdmin) return;
+            try {
+                await updateDoc(doc(db, "users", uid), { verified: false });
+                await loadAdminTab('users');
+            } catch (err) {
+                console.error(err);
+                alert("Failed to unverify.");
+            }
+        };
+        window.deletePostAdmin = async function (postId) {
+            if (!isAdmin) return;
+            if (!confirm("Delete this post permanently?")) return;
+            try {
+                await deleteDoc(doc(db, "posts", postId));
+                await loadAdminTab('posts');
+            } catch (err) {
+                console.error(err);
+                alert("Failed to delete. Check your Firestore rules.");
+            }
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAdminPanel();
+        });
     </script>
 </body>
 </html>
