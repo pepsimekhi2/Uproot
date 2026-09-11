@@ -9,6 +9,7 @@ import {
   setDoc,
   getDoc,
   updateDoc,
+  deleteDoc,
   collection,
   addDoc,
   query,
@@ -16,10 +17,10 @@ import {
   orderBy,
   limit,
   onSnapshot,
+  getDocs,
   arrayUnion,
   arrayRemove,
-  increment,
-  deleteDoc
+  increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -43,6 +44,7 @@ export {
   setDoc,
   getDoc,
   updateDoc,
+  deleteDoc,
   collection,
   addDoc,
   query,
@@ -50,10 +52,10 @@ export {
   orderBy,
   limit,
   onSnapshot,
+  getDocs,
   arrayUnion,
   arrayRemove,
-  increment,
-  deleteDoc
+  increment
 };
 
 export const googleProvider = new GoogleAuthProvider();
