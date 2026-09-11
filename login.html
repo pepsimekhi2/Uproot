@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uproot • Log In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f6faf8;
+            color: #0d1c2b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .auth-wrapper {
+            width: 100%; max-width: 1100px; min-height: 640px;
+            background: white; border-radius: 40px;
+            box-shadow: 0 40px 80px -20px rgba(15, 107, 75, 0.15), 0 0 0 1px rgba(15, 107, 75, 0.04);
+            display: grid; grid-template-columns: 1fr 1fr; overflow: hidden;
+        }
+        .brand-panel {
+            background: linear-gradient(160deg, #0f6b4b 0%, #0b553b 50%, #0a3d2a 100%);
+            padding: 48px 40px; display: flex; flex-direction: column;
+            justify-content: space-between; color: white; position: relative; overflow: hidden;
+        }
+        .brand-panel::before {
+            content: ''; position: absolute; top: -20%; right: -20%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(76, 214, 154, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .brand-logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 1.8rem; font-weight: 800; color: white;
+            text-decoration: none; position: relative; z-index: 2;
+        }
+        .brand-logo i { font-size: 2rem; color: #4cd69a; }
+        .brand-content { position: relative; z-index: 2; }
+        .brand-content h1 {
+            font-size: 2.4rem; font-weight: 900; line-height: 1.15;
+            letter-spacing: -1.5px; margin-bottom: 16px;
+        }
+        .brand-content h1 .accent { color: #4cd69a; }
+        .brand-content p {
+            font-size: 1rem; color: rgba(255,255,255,0.8);
+            line-height: 1.7; max-width: 380px;
+        }
+        .brand-footer {
+            position: relative; z-index: 2; font-size: 0.85rem;
+            color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 8px;
+        }
+        .brand-footer i { color: #4cd69a; }
+        .form-panel {
+            padding: 48px 40px; display: flex; flex-direction: column; justify-content: center;
+        }
+        .form-panel h2 {
+            font-size: 1.8rem; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 6px;
+        }
+        .subtitle { font-size: 0.95rem; color: #5d6f7f; margin-bottom: 28px; }
+        .input-group { margin-bottom: 18px; }
+        .input-group label {
+            display: block; font-size: 0.88rem; font-weight: 600;
+            color: #1a2b3c; margin-bottom: 8px;
+        }
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        .input-wrapper i {
+            position: absolute; left: 16px; color: #8fa3b3; font-size: 0.95rem; pointer-events: none;
+        }
+        .input-wrapper input {
+            width: 100%; padding: 13px 16px 13px 44px;
+            border: 2px solid #e0e8e6; border-radius: 14px;
+            font-family: 'Inter', sans-serif; font-size: 0.95rem;
+            color: #0d1c2b; background: #f9fbfa;
+            transition: all 0.2s; outline: none;
+        }
+        .input-wrapper input:focus {
+            border-color: #0f6b4b; background: white;
+            box-shadow: 0 0 0 4px rgba(15, 107, 75, 0.08);
+        }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 10px; padding: 13px 28px; border-radius: 60px;
+            font-weight: 600; font-size: 0.95rem; transition: all 0.2s;
+            cursor: pointer; border: none; text-decoration: none;
+            font-family: 'Inter', sans-serif; width: 100%;
+        }
+        .btn-primary { background: #0f6b4b; color: white; box-shadow: 0 8px 18px -6px rgba(15, 107, 75, 0.3); }
+        .btn-primary:hover { background: #0b553b; transform: translateY(-2px); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .divider {
+            display: flex; align-items: center; gap: 16px;
+            margin: 22px 0; color: #8fa3b3; font-size: 0.82rem;
+        }
+        .divider::before, .divider::after {
+            content: ''; flex: 1; height: 1px; background: #e0e8e6;
+        }
+        .social-buttons { display: flex; gap: 10px; }
+        .social-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            gap: 8px; padding: 12px; border: 2px solid #e0e8e6;
+            border-radius: 14px; background: #f9fbfa;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem;
+            font-weight: 600; color: #2f3e4e; cursor: pointer; transition: all 0.2s;
+        }
+        .social-btn:hover { border-color: #b8d5c9; background: #f0f7f4; }
+        .toggle-auth {
+            text-align: center; margin-top: 22px;
+            font-size: 0.88rem; color: #5d6f7f;
+        }
+        .toggle-auth a { color: #0f6b4b; font-weight: 600; text-decoration: none; cursor: pointer; }
+        .toggle-auth a:hover { text-decoration: underline; }
+        .error-msg {
+            background: #fef5f5; border: 1px solid #fbdada;
+            color: #c0392b; padding: 10px 14px; border-radius: 12px;
+            font-size: 0.85rem; margin-bottom: 16px; display: none;
+        }
+        .error-msg.show { display: block; }
+        .mobile-brand {
+            display: none; align-items: center; gap: 8px;
+            font-size: 1.5rem; font-weight: 800; color: #0d1c2b;
+            text-decoration: none; margin-bottom: 24px;
+        }
+        .mobile-brand i { color: #0f6b4b; }
+        @media (max-width: 860px) {
+            body { padding: 0; align-items: flex-start; }
+            .auth-wrapper { grid-template-columns: 1fr; border-radius: 0; min-height: 100vh; box-shadow: none; }
+            .brand-panel { display: none; }
+            .form-panel { padding: 32px 24px; }
+            .mobile-brand { display: flex; }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="brand-panel">
+            <a href="/" class="brand-logo"><i class="fas fa-seedling"></i><span>Uproot</span></a>
+            <div class="brand-content">
+                <h1>Welcome <span class="accent">back.</span></h1>
+                <p>Log in to continue your climate journey with your community.</p>
+            </div>
+            <div class="brand-footer">
+                <i class="fas fa-heart"></i><span>Made for communities and the planet</span>
+            </div>
+        </div>
+
+        <div class="form-panel">
+            <a href="/" class="mobile-brand"><i class="fas fa-seedling"></i><span>Uproot</span></a>
+            <h2>Log in</h2>
+            <p class="subtitle">Enter your details to access your dashboard.</p>
+
+            <div class="error-msg" id="errorMsg"></div>
+
+            <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
+                <div class="input-group">
+                    <label>Email address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                <div style="text-align: right; margin-bottom: 18px;">
+                    <a href="#" style="font-size: 0.82rem; color: #0f6b4b; font-weight: 600; text-decoration: none;">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary" id="loginBtn">
+                    <i class="fas fa-arrow-right-to-bracket"></i> Log in
+                </button>
+            </form>
+
+            <div class="divider">or continue with</div>
+            <div class="social-buttons">
+                <button class="social-btn" onclick="socialLogin()">
+                    <i class="fab fa-google" style="color:#ea4335;"></i> Google
+                </button>
+            </div>
+
+            <div class="toggle-auth">
+                Don't have an account? <a href="/register">Sign up free</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db, googleProvider, doc, getDoc } from "./firebase-config.js";
+        import {
+            signInWithEmailAndPassword,
+            signInWithPopup,
+            onAuthStateChanged,
+            setPersistence,
+            browserLocalPersistence
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        const errorMsg = document.getElementById('errorMsg');
+        const loginBtn = document.getElementById('loginBtn');
+
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.add('show');
+            setTimeout(() => errorMsg.classList.remove('show'), 5000);
+        }
+
+        function prettyError(code) {
+            const map = {
+                "auth/invalid-email": "That email address looks invalid.",
+                "auth/user-not-found": "No account found with that email.",
+                "auth/wrong-password": "Incorrect password.",
+                "auth/invalid-credential": "Incorrect email or password.",
+                "auth/too-many-requests": "Too many attempts. Please try again later.",
+                "auth/popup-closed-by-user": "Sign-in popup was closed.",
+                "auth/network-request-failed": "Network error. Check your connection."
+            };
+            return map[code] || "Something went wrong. Please try again.";
+        }
+
+        // Redirect if already signed in
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Check if onboarding is complete
+                try {
+                    const snap = await getDoc(doc(db, "users", user.uid));
+                    if (snap.exists() && snap.data().profileComplete) {
+                        window.location.replace("/dashboard");
+                    } else {
+                        window.location.replace("/register");
+                    }
+                } catch (e) {
+                    window.location.replace("/dashboard");
+                }
+            }
+        });
+
+        window.handleLogin = async function () {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) return showError("Please fill in all fields.");
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+
+            try {
+                await setPersistence(auth, browserLocalPersistence);
+                await signInWithEmailAndPassword(auth, email, password);
+                // onAuthStateChanged handles redirect
+            } catch (err) {
+                showError(prettyError(err.code));
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Log in';
+            }
+        };
+
+        window.socialLogin = async function () {
+            try {
+                await setPersistence(auth, browserLocalPersistence);
+                const result = await signInWithPopup(auth, googleProvider);
+                // Check if user has completed onboarding
+                const snap = await getDoc(doc(db, "users", result.user.uid));
+                if (!snap.exists() || !snap.data().profileComplete) {
+                    window.location.replace("/register");
+                } else {
+                    window.location.replace("/dashboard");
+                }
+            } catch (err) {
+                showError(prettyError(err.code));
+            }
+        };
+    </script>
+</body>
+</html>
