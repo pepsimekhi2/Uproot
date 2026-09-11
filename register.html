@@ -98,16 +98,16 @@
             letter-spacing: -0.8px; margin-bottom: 6px;
         }
         .form-step .subtitle { font-size: 0.92rem; color: #5d6f7f; margin-bottom: 24px; }
-        .input-group { margin-bottom: 16px; }
+        .input-group { margin-bottom: 16px; position: relative; }
         .input-group label {
             display: block; font-size: 0.85rem; font-weight: 600;
             color: #1a2b3c; margin-bottom: 7px;
         }
         .input-group label .required { color: #e74c3c; margin-left: 2px; }
         .input-wrapper { position: relative; display: flex; align-items: center; }
-        .input-wrapper i {
+        .input-wrapper i.field-icon {
             position: absolute; left: 15px; color: #8fa3b3;
-            font-size: 0.92rem; pointer-events: none;
+            font-size: 0.92rem; pointer-events: none; z-index: 2;
         }
         .input-wrapper input,
         .input-wrapper select,
@@ -118,6 +118,7 @@
             color: #0d1c2b; background: #f9fbfa;
             transition: all 0.2s; outline: none;
         }
+        .input-wrapper input.has-status { padding-right: 110px; }
         .input-wrapper select {
             cursor: pointer; appearance: none; -webkit-appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238fa3b3' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
@@ -133,6 +134,42 @@
             box-shadow: 0 0 0 4px rgba(15, 107, 75, 0.08);
         }
         .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .uname-ok { color: #0f6b4b !important; }
+        .uname-bad { color: #e74c3c !important; }
+        .uname-checking { color: #8fa3b3 !important; }
+        .username-status {
+            position: absolute; right: 14px; font-size: 0.75rem;
+            font-weight: 600; pointer-events: none; z-index: 3;
+        }
+        /* Autocomplete dropdown */
+        .autocomplete-list {
+            position: absolute; top: 100%; left: 0; right: 0;
+            background: white; border: 2px solid #e0e8e6;
+            border-top: none; border-radius: 0 0 13px 13px;
+            max-height: 220px; overflow-y: auto; z-index: 50;
+            display: none; box-shadow: 0 12px 24px -10px rgba(15, 107, 75, 0.15);
+        }
+        .autocomplete-list.show { display: block; }
+        .autocomplete-item {
+            padding: 11px 16px; font-size: 0.9rem; color: #2f3e4e;
+            cursor: pointer; transition: all 0.15s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .autocomplete-item:hover,
+        .autocomplete-item.active {
+            background: #e9f3ef; color: #0f6b4b;
+        }
+        .autocomplete-item i {
+            font-size: 0.75rem; color: #8fa3b3;
+        }
+        .autocomplete-item:hover i,
+        .autocomplete-item.active i {
+            color: #0f6b4b;
+        }
+        .autocomplete-loading {
+            padding: 12px 16px; font-size: 0.85rem;
+            color: #8fa3b3; display: flex; align-items: center; gap: 8px;
+        }
         .interest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .interest-item {
             display: flex; align-items: center; gap: 10px;
@@ -275,29 +312,64 @@
                 <div class="input-row">
                     <div class="input-group">
                         <label>First name <span class="required">*</span></label>
-                        <div class="input-wrapper"><i class="fas fa-user"></i><input type="text" id="firstName" placeholder="Jane"></div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user field-icon"></i>
+                            <input type="text" id="firstName" placeholder="Jane" autocomplete="given-name">
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>Last name <span class="required">*</span></label>
-                        <div class="input-wrapper"><i class="fas fa-user"></i><input type="text" id="lastName" placeholder="Doe"></div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user field-icon"></i>
+                            <input type="text" id="lastName" placeholder="Doe" autocomplete="family-name">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Display name <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-id-badge field-icon"></i>
+                            <input type="text" id="displayName" placeholder="Jane Doe" maxlength="40" autocomplete="nickname">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Username <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-at field-icon"></i>
+                            <input type="text" id="username" class="has-status" placeholder="janedoe" maxlength="20" autocomplete="username">
+                            <span class="username-status" id="usernameStatus"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="input-group">
                     <label>Email address <span class="required">*</span></label>
-                    <div class="input-wrapper"><i class="fas fa-envelope"></i><input type="email" id="signupEmail" placeholder="you@example.com"></div>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope field-icon"></i>
+                        <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
+                    </div>
                 </div>
                 <div class="input-group">
                     <label>Phone number <span class="required">*</span></label>
-                    <div class="input-wrapper"><i class="fas fa-phone"></i><input type="tel" id="phone" placeholder="+1 (555) 000-0000"></div>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone field-icon"></i>
+                        <input type="tel" id="phone" placeholder="+1 (555) 000-0000" autocomplete="tel">
+                    </div>
                 </div>
                 <div class="input-row">
                     <div class="input-group">
                         <label>Password <span class="required">*</span></label>
-                        <div class="input-wrapper"><i class="fas fa-lock"></i><input type="password" id="signupPassword" placeholder="Min. 8 characters"></div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock field-icon"></i>
+                            <input type="password" id="signupPassword" placeholder="Min. 8 characters" autocomplete="new-password">
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>Confirm password <span class="required">*</span></label>
-                        <div class="input-wrapper"><i class="fas fa-lock"></i><input type="password" id="confirmPassword" placeholder="Repeat password"></div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock field-icon"></i>
+                            <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password">
+                        </div>
                     </div>
                 </div>
                 <div class="btn-group">
@@ -313,45 +385,56 @@
                 <div class="input-group">
                     <label>Country <span class="required">*</span></label>
                     <div class="input-wrapper">
-                        <i class="fas fa-globe"></i>
+                        <i class="fas fa-globe field-icon"></i>
                         <select id="country">
                             <option value="">Select your country</option>
-                            <option>United States</option>
-                            <option>Canada</option>
-                            <option>United Kingdom</option>
-                            <option>Australia</option>
-                            <option>Germany</option>
-                            <option>France</option>
-                            <option>Netherlands</option>
-                            <option>Sweden</option>
-                            <option>Norway</option>
-                            <option>Denmark</option>
-                            <option>Japan</option>
-                            <option>Brazil</option>
-                            <option>Mexico</option>
-                            <option>India</option>
-                            <option>Other</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="SE">Sweden</option>
+                            <option value="NO">Norway</option>
+                            <option value="DK">Denmark</option>
+                            <option value="JP">Japan</option>
+                            <option value="BR">Brazil</option>
+                            <option value="MX">Mexico</option>
+                            <option value="IN">India</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
                 </div>
                 <div class="input-row">
                     <div class="input-group">
                         <label>State / Province <span class="required">*</span></label>
-                        <div class="input-wrapper"><i class="fas fa-map"></i><input type="text" id="state" placeholder="California"></div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-map field-icon"></i>
+                            <input type="text" id="state" placeholder="Start typing..." autocomplete="off">
+                            <div class="autocomplete-list" id="stateList"></div>
+                        </div>
                     </div>
                     <div class="input-group">
                         <label>City <span class="required">*</span></label>
-                        <div class="input-wrapper"><i class="fas fa-city"></i><input type="text" id="city" placeholder="San Francisco"></div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-city field-icon"></i>
+                            <input type="text" id="city" placeholder="Start typing..." autocomplete="off">
+                            <div class="autocomplete-list" id="cityList"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="input-group">
                     <label>ZIP / Postal code <span class="required">*</span></label>
-                    <div class="input-wrapper"><i class="fas fa-location-dot"></i><input type="text" id="zip" placeholder="94105"></div>
+                    <div class="input-wrapper">
+                        <i class="fas fa-location-dot field-icon"></i>
+                        <input type="text" id="zip" placeholder="94105" autocomplete="postal-code">
+                    </div>
                 </div>
                 <div class="input-group">
                     <label>How did you hear about Uproot?</label>
                     <div class="input-wrapper">
-                        <i class="fas fa-bullhorn"></i>
+                        <i class="fas fa-bullhorn field-icon"></i>
                         <select id="referral">
                             <option value="">Select an option</option>
                             <option>Friend or family</option>
@@ -406,7 +489,7 @@
             <!-- STEP 4 -->
             <div class="form-step" id="step4">
                 <h2>When can you help?</h2>
-                <p class="subtitle">Let us know your availability.</p>
+                <p class="subtitle">Let us know your availability so we can match you with the right events.</p>
                 <label style="display:block;font-size:0.85rem;font-weight:600;color:#1a2b3c;margin-bottom:10px;">General availability <span class="required" style="color:#e74c3c;">*</span></label>
                 <div class="availability-grid">
                     <div class="avail-item" data-value="weekdays"><i class="fas fa-briefcase"></i><span>Weekdays</span></div>
@@ -415,15 +498,17 @@
                 </div>
                 <div class="input-group">
                     <label>Tell us a little about yourself</label>
-                    <div class="input-wrapper"><i class="fas fa-pen"></i><textarea id="bio" placeholder="I'm passionate about..."></textarea></div>
+                    <div class="input-wrapper">
+                        <i class="fas fa-pen field-icon"></i>
+                        <textarea id="bio" placeholder="I'm passionate about... I'd love to help with..."></textarea>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Emergency contact name</label>
-                    <div class="input-wrapper"><i class="fas fa-user-shield"></i><input type="text" id="emergencyName" placeholder="Full name"></div>
-                </div>
-                <div class="input-group">
-                    <label>Emergency contact phone</label>
-                    <div class="input-wrapper"><i class="fas fa-phone"></i><input type="tel" id="emergencyPhone" placeholder="+1 (555) 000-0000"></div>
+                    <label>Your pronouns (optional)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user-tag field-icon"></i>
+                        <input type="text" id="pronouns" placeholder="she/her, he/him, they/them...">
+                    </div>
                 </div>
                 <div class="input-group">
                     <label style="display:flex;align-items:center;gap:10px;font-weight:500;cursor:pointer;">
@@ -452,7 +537,10 @@
     </div>
 
     <script type="module">
-        import { auth, db, doc, setDoc, serverTimestamp } from "./firebase-config.js";
+        import {
+            auth, db, doc, setDoc, getDoc, serverTimestamp,
+            collection, query, where, getDocs, limit
+        } from "./firebase-config.js";
         import {
             createUserWithEmailAndPassword,
             updateProfile,
@@ -468,10 +556,8 @@
         const errorMsg = document.getElementById('errorMsg');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Redirect if already logged in AND onboarded
         onAuthStateChanged(auth, async (user) => {
             if (user && currentStep === 1) {
-                const { getDoc } = await import("./firebase-config.js");
                 const snap = await getDoc(doc(db, "users", user.uid));
                 if (snap.exists() && snap.data().profileComplete) {
                     window.location.replace("/dashboard");
@@ -485,7 +571,6 @@
             errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        // ---------- Interest / Skill / Avail toggles ----------
         document.querySelectorAll('.interest-item').forEach(el => {
             el.addEventListener('click', () => {
                 const v = el.dataset.value;
@@ -508,7 +593,6 @@
             });
         });
 
-        // ---------- Navigation ----------
         window.goToStep = function (step) {
             currentStep = step;
             document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
@@ -519,26 +603,89 @@
             errorMsg.classList.remove('show');
             document.querySelector('.form-panel').scrollTop = 0;
         };
-
         window.nextStep = function (step) {
             if (!validateStep(currentStep)) return;
             goToStep(step);
         };
         window.prevStep = function (step) { goToStep(step); };
 
-        // ---------- Validation ----------
+        // ---------- USERNAME ----------
+        const RESERVED_USERNAMES = ['uproot', 'admin', 'support', 'help', 'official', 'root', 'system', 'moderator', 'staff'];
+        const usernameInput = document.getElementById('username');
+        const usernameStatus = document.getElementById('usernameStatus');
+        let usernameAvailable = false;
+        let usernameCheckTimer = null;
+
+        function isValidUsername(u) {
+            return /^[a-zA-Z0-9_]{3,20}$/.test(u);
+        }
+        function setUsernameStatus(text, cls) {
+            if (usernameStatus) {
+                usernameStatus.textContent = text;
+                usernameStatus.className = 'username-status ' + (cls || '');
+            }
+        }
+        async function checkUsernameAvailability(rawUsername) {
+            const uname = rawUsername.toLowerCase().trim();
+            if (!uname) { setUsernameStatus('', ''); usernameAvailable = false; return; }
+            if (uname.length < 3) { setUsernameStatus('Too short', 'uname-bad'); usernameAvailable = false; return; }
+            if (!isValidUsername(uname)) { setUsernameStatus('Letters, numbers, _ only', 'uname-bad'); usernameAvailable = false; return; }
+            if (RESERVED_USERNAMES.includes(uname)) { setUsernameStatus('Reserved', 'uname-bad'); usernameAvailable = false; return; }
+            setUsernameStatus('Checking...', 'uname-checking');
+            try {
+                const q = query(collection(db, "users"), where("usernameLower", "==", uname), limit(1));
+                const snap = await getDocs(q);
+                if (snap.empty) {
+                    setUsernameStatus('✓ Available', 'uname-ok');
+                    usernameAvailable = true;
+                } else {
+                    setUsernameStatus('Taken', 'uname-bad');
+                    usernameAvailable = false;
+                }
+            } catch (err) {
+                console.error("Username check failed:", err);
+                setUsernameStatus('Check failed', 'uname-bad');
+                usernameAvailable = false;
+            }
+        }
+        if (usernameInput) {
+            usernameInput.addEventListener('input', () => {
+                clearTimeout(usernameCheckTimer);
+                const val = usernameInput.value.trim();
+                usernameCheckTimer = setTimeout(() => checkUsernameAvailability(val), 350);
+            });
+        }
+
+        // Auto-fill display name
+        let displayNameTouched = false;
+        document.getElementById('displayName')?.addEventListener('input', () => { displayNameTouched = true; });
+        ['firstName', 'lastName'].forEach(id => {
+            document.getElementById(id)?.addEventListener('input', () => {
+                if (displayNameTouched) return;
+                const fn = document.getElementById('firstName').value.trim();
+                const ln = document.getElementById('lastName').value.trim();
+                document.getElementById('displayName').value = [fn, ln].filter(Boolean).join(' ');
+            });
+        });
+
+        // ---------- VALIDATION ----------
         function validateStep(step) {
             if (step === 1) {
                 const fn = document.getElementById('firstName').value.trim();
                 const ln = document.getElementById('lastName').value.trim();
+                const dn = document.getElementById('displayName').value.trim();
+                const un = document.getElementById('username').value.trim();
                 const em = document.getElementById('signupEmail').value.trim();
                 const ph = document.getElementById('phone').value.trim();
                 const pw = document.getElementById('signupPassword').value;
                 const cf = document.getElementById('confirmPassword').value;
-                if (!fn || !ln || !em || !ph || !pw || !cf) return showErrorAndFalse("Please fill in all required fields.");
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return showErrorAndFalse("Please enter a valid email address.");
-                if (pw.length < 8) return showErrorAndFalse("Password must be at least 8 characters.");
-                if (pw !== cf) return showErrorAndFalse("Passwords do not match.");
+                if (!fn || !ln || !dn || !un || !em || !ph || !pw || !cf) return showErr("Please fill in all required fields.");
+                if (!isValidUsername(un)) return showErr("Username must be 3–20 characters: letters, numbers, underscore only.");
+                if (RESERVED_USERNAMES.includes(un.toLowerCase())) return showErr("That username is reserved.");
+                if (!usernameAvailable) return showErr("Please pick an available username.");
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return showErr("Please enter a valid email address.");
+                if (pw.length < 8) return showErr("Password must be at least 8 characters.");
+                if (pw !== cf) return showErr("Passwords do not match.");
                 return true;
             }
             if (step === 2) {
@@ -546,29 +693,184 @@
                 const s = document.getElementById('state').value.trim();
                 const ci = document.getElementById('city').value.trim();
                 const z = document.getElementById('zip').value.trim();
-                if (!c || !s || !ci || !z) return showErrorAndFalse("Please fill in all required location fields.");
+                if (!c || !s || !ci || !z) return showErr("Please fill in all required location fields.");
                 return true;
             }
             if (step === 3) {
-                if (interests.size === 0) return showErrorAndFalse("Please select at least one interest.");
+                if (interests.size === 0) return showErr("Please select at least one interest.");
                 return true;
             }
             if (step === 4) {
-                if (availability.size === 0) return showErrorAndFalse("Please select at least one availability option.");
-                if (!document.getElementById('terms').checked) return showErrorAndFalse("Please agree to the Terms and Privacy Policy.");
+                if (availability.size === 0) return showErr("Please select at least one availability option.");
+                if (!document.getElementById('terms').checked) return showErr("Please agree to the Terms and Privacy Policy.");
                 return true;
             }
             return true;
         }
+        function showErr(m) { showError(m); return false; }
 
-        function showErrorAndFalse(msg) { showError(msg); return false; }
+        // ---------- AUTOCOMPLETE ----------
+        const US_STATES = [
+            "Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut",
+            "Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa",
+            "Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan",
+            "Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire",
+            "New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio",
+            "Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota",
+            "Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia",
+            "Wisconsin","Wyoming"
+        ];
 
-        // ---------- Complete Signup ----------
+        function setupAutocomplete(inputId, listId, mode) {
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
+            if (!input || !list) return;
+
+            let items = [];
+            let activeIndex = -1;
+            let debounceTimer = null;
+            let lastQuery = "";
+
+            function renderItems(listData) {
+                items = listData;
+                activeIndex = -1;
+                if (!listData.length) {
+                    list.innerHTML = '';
+                    list.classList.remove('show');
+                    return;
+                }
+                list.innerHTML = listData.map((v, i) =>
+                    `<div class="autocomplete-item" data-index="${i}">
+                        <i class="fas ${mode === 'state' ? 'fa-map' : 'fa-city'}"></i>
+                        <span>${escapeHtml(v)}</span>
+                    </div>`
+                ).join('');
+                list.classList.add('show');
+                list.querySelectorAll('.autocomplete-item').forEach(el => {
+                    el.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                        input.value = el.querySelector('span').textContent;
+                        list.classList.remove('show');
+                        list.innerHTML = '';
+                    });
+                });
+            }
+
+            function showLoading() {
+                list.innerHTML = '<div class="autocomplete-loading"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
+                list.classList.add('show');
+            }
+
+            input.addEventListener('input', () => {
+                const q = input.value.trim();
+                if (q.length < 2) {
+                    list.classList.remove('show');
+                    list.innerHTML = '';
+                    return;
+                }
+                if (mode === 'state') {
+                    const matches = US_STATES.filter(s => s.toLowerCase().startsWith(q.toLowerCase())).slice(0, 8);
+                    renderItems(matches);
+                } else if (mode === 'city') {
+                    if (q === lastQuery) return;
+                    lastQuery = q;
+                    clearTimeout(debounceTimer);
+                    showLoading();
+                    debounceTimer = setTimeout(async () => {
+                        try {
+                            const country = document.getElementById('country').value || 'US';
+                            const state = document.getElementById('state').value.trim();
+                            const res = await fetch("https://countriesnow.space/api/v0.1/countries/state/cities", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ country: mapCountryName(country), state })
+                            });
+                            const data = await res.json();
+                            if (!data || !data.data || !Array.isArray(data.data)) { renderItems([]); return; }
+                            const matches = data.data
+                                .filter(c => c.toLowerCase().startsWith(q.toLowerCase()))
+                                .slice(0, 8);
+                            renderItems(matches);
+                        } catch (err) {
+                            console.warn("City autocomplete failed:", err);
+                            list.classList.remove('show');
+                        }
+                    }, 250);
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (!list.classList.contains('show')) return;
+                const nodes = list.querySelectorAll('.autocomplete-item');
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    activeIndex = Math.min(activeIndex + 1, nodes.length - 1);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    activeIndex = Math.max(activeIndex - 1, 0);
+                } else if (e.key === 'Enter' && activeIndex >= 0) {
+                    e.preventDefault();
+                    input.value = nodes[activeIndex].querySelector('span').textContent;
+                    list.classList.remove('show');
+                    return;
+                } else if (e.key === 'Escape') {
+                    list.classList.remove('show');
+                    return;
+                }
+                nodes.forEach((n, i) => n.classList.toggle('active', i === activeIndex));
+            });
+
+            input.addEventListener('blur', () => {
+                setTimeout(() => {
+                    list.classList.remove('show');
+                    list.innerHTML = '';
+                }, 150);
+            });
+            input.addEventListener('focus', () => {
+                if (input.value.trim().length >= 2 && items.length) {
+                    list.classList.add('show');
+                }
+            });
+        }
+
+        function mapCountryName(code) {
+            const map = {
+                "US": "United States", "CA": "Canada", "GB": "United Kingdom",
+                "AU": "Australia", "DE": "Germany", "FR": "France",
+                "NL": "Netherlands", "SE": "Sweden", "NO": "Norway",
+                "DK": "Denmark", "JP": "Japan", "BR": "Brazil",
+                "MX": "Mexico", "IN": "India"
+            };
+            return map[code] || "United States";
+        }
+
+        function escapeHtml(s) {
+            if (s == null) return "";
+            return String(s).replace(/[&<>"']/g, c => ({
+                "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+            })[c]);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupAutocomplete('state', 'stateList', 'state');
+            setupAutocomplete('city', 'cityList', 'city');
+            document.getElementById('state').addEventListener('input', () => {
+                document.getElementById('city').value = '';
+            });
+            document.getElementById('country').addEventListener('change', () => {
+                document.getElementById('state').value = '';
+                document.getElementById('city').value = '';
+            });
+        });
+
+        // ---------- SIGNUP ----------
         window.completeSignup = async function () {
             if (!validateStep(4)) return;
 
             const firstName = document.getElementById('firstName').value.trim();
             const lastName  = document.getElementById('lastName').value.trim();
+            const displayName = document.getElementById('displayName').value.trim();
+            const username  = document.getElementById('username').value.trim().toLowerCase();
             const email     = document.getElementById('signupEmail').value.trim();
             const password  = document.getElementById('signupPassword').value;
             const phone     = document.getElementById('phone').value.trim();
@@ -578,8 +880,7 @@
             const zip       = document.getElementById('zip').value.trim();
             const referral  = document.getElementById('referral').value;
             const bio       = document.getElementById('bio').value.trim();
-            const emName    = document.getElementById('emergencyName').value.trim();
-            const emPhone   = document.getElementById('emergencyPhone').value.trim();
+            const pronouns  = document.getElementById('pronouns').value.trim();
 
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
@@ -587,29 +888,43 @@
             try {
                 const cred = await createUserWithEmailAndPassword(auth, email, password);
                 const uid = cred.user.uid;
+                await updateProfile(cred.user, { displayName });
 
-                await updateProfile(cred.user, { displayName: `${firstName} ${lastName}` });
+                const isOwner = username === 'uproot';
 
                 await setDoc(doc(db, "users", uid), {
                     uid,
                     firstName,
                     lastName,
-                    displayName: `${firstName} ${lastName}`,
+                    displayName,
+                    username,
+                    usernameLower: username,
                     email,
                     phone,
+                    pronouns: pronouns || null,
                     location: { country, state, city, zip },
                     referral: referral || null,
                     interests: Array.from(interests),
                     skills: Array.from(skills),
                     availability: Array.from(availability),
                     bio: bio || "",
-                    emergencyContact: { name: emName || "", phone: emPhone || "" },
                     profileComplete: true,
+                    verified: isOwner,
+                    isAdmin: isOwner,
+                    role: isOwner ? 'owner' : 'member',
                     createdAt: serverTimestamp(),
                     updatedAt: serverTimestamp()
                 });
 
-                // Success
+                if (isOwner) {
+                    await setDoc(doc(db, "admins", uid), {
+                        role: 'owner',
+                        username,
+                        email,
+                        createdAt: serverTimestamp()
+                    });
+                }
+
                 document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
                 document.getElementById('progressBar').style.display = 'none';
                 document.getElementById('successStep').classList.add('active');
