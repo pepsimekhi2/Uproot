@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uproot • Community Driven Climate Action</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f6faf8;
+            color: #0d1c2b;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ---------- ANIMATIONS ---------- */
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.08); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.08); }
+            70% { transform: scale(1); }
+        }
+
+        @keyframes tick {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(0.99); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .fade-up {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #0f6b4b 0%, #1e8f63 40%, #2bb47c 80%, #4cd69a 100%);
+            background-size: 200% 200%;
+            animation: gradient-shift 6s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #0f6b4b;
+            color: white;
+            box-shadow: 0 8px 18px -6px rgba(15, 107, 75, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #0b553b;
+            transform: translateY(-3px);
+            box-shadow: 0 16px 28px -10px rgba(15, 107, 75, 0.45);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #0f6b4b;
+            color: #0f6b4b;
+        }
+
+        .btn-outline:hover {
+            background: #e9f3ef;
+            transform: translateY(-3px);
+        }
+
+        .btn-light {
+            background: white;
+            color: #0f6b4b;
+            border: 1px solid #d0e2da;
+        }
+
+        .btn-light:hover {
+            background: #f0f7f4;
+            border-color: #b8d5c9;
+            transform: translateY(-2px);
+        }
+
+        /* header */
+        header {
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(246, 250, 248, 0.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #0d1c2b;
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: #0f6b4b;
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2f3e4e;
+            font-weight: 500;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #0f6b4b;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* ---------- HERO ---------- */
+        .hero {
+            padding: 60px 0 80px;
+            position: relative;
+            overflow: hidden;
+            background: #f6faf8;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(43, 180, 124, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            color: #0d1c2b;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #3f5568;
+            margin-bottom: 36px;
+            max-width: 90%;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+
+        /* hero visual with real images */
+        .hero-visual {
+            position: relative;
+        }
+
+        .visual-collage {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .collage-item {
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1);
+            position: relative;
+            border: 3px solid white;
+        }
+
+        .collage-item:hover {
+            transform: scale(1.03) translateY(-6px);
+            box-shadow: 0 30px 50px -12px rgba(15, 107, 75, 0.25);
+            z-index: 2;
+        }
+
+        .collage-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .collage-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .collage-item:nth-child(1) {
+            grid-row: span 2;
+            height: 100%;
+            min-height: 340px;
+        }
+
+        .collage-item:nth-child(2) {
+            height: 160px;
+        }
+
+        .collage-item:nth-child(3) {
+            height: 160px;
+        }
+
+        /* ---------- WHAT IS UPROOT ---------- */
+        .what-is {
+            padding: 100px 0;
+            background: #ffffff;
+        }
+
+        .what-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .what-content .section-tag {
+            display: inline-block;
+            background: #d0ede1;
+            color: #0f6b4b;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .what-content h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            color: #0d1c2b;
+        }
+
+        .what-content p {
+            font-size: 1.15rem;
+            color: #3f5568;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .what-content .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .what-content .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 500;
+            color: #1a2b3c;
+            list-style: none;
+        }
+
+        .what-content .feature-list li i {
+            color: #0f6b4b;
+            background: #e1f0e9;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .what-image {
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 30px 50px -15px rgba(15, 107, 75, 0.2);
+            transition: transform 0.4s ease;
+        }
+
+        .what-image:hover {
+            transform: translateY(-8px);
+        }
+
+        .what-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* ---------- WHY UPROOT ---------- */
+        .why-uproot {
+            padding: 100px 0;
+            background: #edf5f0;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .why-image {
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 30px 50px -15px rgba(15, 107, 75, 0.15);
+            transition: transform 0.4s ease;
+        }
+
+        .why-image:hover {
+            transform: translateY(-8px);
+        }
+
+        .why-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .why-content .section-tag {
+            display: inline-block;
+            background: #d0ede1;
+            color: #0f6b4b;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .why-content h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            color: #0d1c2b;
+        }
+
+        .why-content p {
+            font-size: 1.15rem;
+            color: #3f5568;
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+
+        .why-content .benefit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 36px;
+        }
+
+        .benefit-item {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 24px;
+            transition: all 0.25s;
+            border: 1px solid rgba(15, 107, 75, 0.05);
+        }
+
+        .benefit-item:hover {
+            background: #f6faf8;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(15, 107, 75, 0.1);
+        }
+
+        .benefit-item i {
+            font-size: 1.6rem;
+            color: #0f6b4b;
+            margin-bottom: 12px;
+        }
+
+        .benefit-item h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #0d1c2b;
+        }
+
+        .benefit-item p {
+            font-size: 0.9rem;
+            color: #5d6f7f;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* ---------- CLIMATE COUNTDOWN ---------- */
+        .climate-section {
+            padding: 100px 0;
+            background: #0d1c2b;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .climate-section::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 30%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(76, 214, 154, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .climate-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .climate-content .section-tag {
+            display: inline-block;
+            background: rgba(76, 214, 154, 0.12);
+            color: #4cd69a;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            border: 1px solid rgba(76, 214, 154, 0.2);
+        }
+
+        .climate-content h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .climate-content h2 .accent {
+            color: #4cd69a;
+        }
+
+        .climate-content > p {
+            font-size: 1.1rem;
+            color: #a8bcc8;
+            margin-bottom: 48px;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .clock-container {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 36px;
+        }
+
+        .clock-unit {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 22px;
+            padding: 24px 20px;
+            min-width: 110px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .clock-unit:hover {
+            background: rgba(255, 255, 255, 0.07);
+            transform: translateY(-4px);
+            border-color: rgba(76, 214, 154, 0.25);
+        }
+
+        .clock-unit .number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #4cd69a;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            animation: tick 1s ease infinite;
+        }
+
+        .clock-unit .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #7a9aaa;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .clock-footer {
+            font-size: 0.95rem;
+            color: #7a9aaa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .clock-footer .heart {
+            color: #4cd69a;
+            animation: heartbeat 1.5s ease infinite;
+        }
+
+        .clock-footer strong {
+            color: #d0e2da;
+        }
+
+        /* ---------- FEATURES ---------- */
+        .features {
+            padding: 100px 0;
+            background: #ffffff;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #0d1c2b;
+            margin-bottom: 20px;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #5d6f7f;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: #f6faf8;
+            border-radius: 32px;
+            padding: 40px 32px;
+            box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 40px -12px rgba(15, 107, 75, 0.12);
+            border-color: #cbe3da;
+            background: #ffffff;
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #e1f0e9, #c8e6d9);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #0f6b4b;
+            margin-bottom: 28px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+            color: #0d1c2b;
+        }
+
+        .feature-card p {
+            color: #5d6f7f;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ---------- CTA ---------- */
+        .cta-section {
+            padding: 40px 0 100px;
+            background: #ffffff;
+        }
+
+        .cta-box {
+            background: linear-gradient(115deg, #0f6b4b 0%, #0b553b 100%);
+            border-radius: 48px;
+            padding: 70px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            color: white;
+            box-shadow: 0 30px 40px -20px rgba(15, 107, 75, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            max-width: 600px;
+        }
+
+        .cta-content p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 500px;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 16px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-white {
+            background: white;
+            color: #0f6b4b;
+            box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-white:hover {
+            background: #f0f7f4;
+            transform: translateY(-3px);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-3px);
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            padding: 60px 0 40px;
+            border-top: 1px solid #e0e8e6;
+            background: #f6faf8;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand p {
+            margin: 20px 0 24px;
+            color: #5d6f7f;
+            max-width: 300px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-icons a {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #eef5f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f6b4b;
+            font-size: 1.2rem;
+            transition: all 0.25s;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            background: #0f6b4b;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #0d1c2b;
+            font-size: 1.05rem;
+        }
+
+        .footer-column a {
+            display: block;
+            text-decoration: none;
+            color: #5d6f7f;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: #0f6b4b;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid #e0e8e6;
+            color: #7a8b9b;
+            font-size: 0.9rem;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 1024px) {
+            .hero-grid,
+            .what-grid,
+            .why-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .cta-box {
+                flex-direction: column;
+                text-align: center;
+                padding: 50px 40px;
+            }
+            .cta-content h2 {
+                font-size: 2.2rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+            .collage-item:nth-child(1) {
+                min-height: 280px;
+            }
+            .clock-unit {
+                min-width: 90px;
+                padding: 20px 16px;
+            }
+            .clock-unit .number {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 2.4rem;
+                letter-spacing: -1px;
+            }
+            .hero p {
+                font-size: 1.05rem;
+            }
+            .what-content h2,
+            .why-content h2 {
+                font-size: 2.2rem;
+            }
+            .climate-content h2 {
+                font-size: 2rem;
+                letter-spacing: -1px;
+            }
+            .climate-content > p {
+                font-size: 1rem;
+            }
+            .clock-container {
+                gap: 10px;
+            }
+            .clock-unit {
+                min-width: 60px;
+                padding: 14px 10px;
+                border-radius: 16px;
+            }
+            .clock-unit .number {
+                font-size: 1.6rem;
+            }
+            .clock-unit .label {
+                font-size: 0.55rem;
+                letter-spacing: 1px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .benefit-grid {
+                grid-template-columns: 1fr;
+            }
+            .cta-box {
+                padding: 40px 24px;
+            }
+            .cta-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .cta-actions .btn {
+                width: 100%;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .collage-item:nth-child(1) {
+                min-height: 200px;
+            }
+            .collage-item:nth-child(2),
+            .collage-item:nth-child(3) {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-wrapper">
+            <a href="/" class="logo">
+                <i class="fas fa-seedling"></i>
+                <span>Uproot</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#what">What is Uproot</a>
+                <a href="#why">Why Uproot</a>
+                <a href="#clock">The Clock</a>
+                <a href="#features">Features</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="/login" class="btn btn-light" style="padding: 10px 22px;">Log in</a>
+                <a href="/register" class="btn btn-primary" style="padding: 10px 22px;">Sign up</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-content fade-up">
+                    <h1 class="gradient-text">Grow together,<br>heal the planet.</h1>
+                    <p>Uproot connects neighbors to form groups, plan events, and organize community service — all focused on reversing climate change, one community at a time.</p>
+                    <div class="hero-actions">
+                        <a href="/register" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i> Get started free
+                        </a>
+                        <a href="#what" class="btn btn-outline">
+                            <i class="fas fa-arrow-down"></i> Learn more
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual fade-up">
+                    <div class="visual-collage">
+                        <div class="collage-item">
+                            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop" alt="Community garden volunteers planting">
+                        </div>
+                        <div class="collage-item">
+                            <img src="https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=600&auto=format&fit=crop" alt="Beach cleanup volunteers">
+                        </div>
+                        <div class="collage-item">
+                            <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=600&auto=format&fit=crop" alt="Community food drive">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHAT IS UPROOT -->
+        <section class="what-is" id="what">
+            <div class="container what-grid">
+                <div class="what-content fade-up">
+                    <span class="section-tag">What is Uproot</span>
+                    <h2>A platform where <span class="gradient-text">communities</span> take root.</h2>
+                    <p>Uproot is a modern, community-driven platform designed to help neighbors organize, connect, and take meaningful action on climate change. Whether you're starting a local garden, planning a cleanup, or launching a service project — Uproot gives you the tools to make it happen.</p>
+                    <p>We believe that the most powerful climate solutions start at the grassroots level. When communities come together, small actions multiply into lasting change.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Form public or private community groups</li>
+                        <li><i class="fas fa-check"></i> Plan and manage local events with RSVP tracking</li>
+                        <li><i class="fas fa-check"></i> Organize volunteer service projects</li>
+                        <li><i class="fas fa-check"></i> Connect with like-minded neighbors</li>
+                    </ul>
+                </div>
+                <div class="what-image fade-up">
+                    <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=1200&auto=format&fit=crop" alt="Diverse community members collaborating outdoors">
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY UPROOT -->
+        <section class="why-uproot" id="why">
+            <div class="container why-grid">
+                <div class="why-image fade-up">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop" alt="People working together on community project">
+                </div>
+                <div class="why-content fade-up">
+                    <span class="section-tag">Why Uproot</span>
+                    <h2>Because the planet <span class="gradient-text">can't wait.</span></h2>
+                    <p>The climate crisis is the defining challenge of our time. But individual action can feel small. Uproot changes that by turning individual efforts into collective impact.</p>
+                    <p>We built Uproot because we believe that real, lasting change happens when communities are empowered to act together — with the right tools, the right people, and the right purpose.</p>
+                    <div class="benefit-grid">
+                        <div class="benefit-item">
+                            <i class="fas fa-bolt"></i>
+                            <h4>Take action fast</h4>
+                            <p>Launch a group or event in minutes, not weeks.</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Track your impact</h4>
+                            <p>See the real difference your community makes.</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-heart"></i>
+                            <h4>Build connections</h4>
+                            <p>Meet neighbors who care about the same things.</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-globe"></i>
+                            <h4>Scale your mission</h4>
+                            <p>Grow from one group to a city-wide movement.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CLIMATE COUNTDOWN -->
+        <section class="climate-section" id="clock">
+            <div class="container climate-content fade-up">
+                <span class="section-tag"><i class="fas fa-clock" style="margin-right: 6px;"></i> Climate Countdown</span>
+                <h2>We have until <span class="accent">2030</span> to act.</h2>
+                <p>Scientists agree we must cut global emissions in half by 2030 to avoid the worst effects of climate change. The clock is ticking — but collective action can change the outcome.</p>
+
+                <div class="clock-container" id="countdown">
+                    <div class="clock-unit">
+                        <div class="number" id="years">00</div>
+                        <div class="label">Years</div>
+                    </div>
+                    <div class="clock-unit">
+                        <div class="number" id="days">000</div>
+                        <div class="label">Days</div>
+                    </div>
+                    <div class="clock-unit">
+                        <div class="number" id="hours">00</div>
+                        <div class="label">Hours</div>
+                    </div>
+                    <div class="clock-unit">
+                        <div class="number" id="minutes">00</div>
+                        <div class="label">Minutes</div>
+                    </div>
+                    <div class="clock-unit">
+                        <div class="number" id="seconds">00</div>
+                        <div class="label">Seconds</div>
+                    </div>
+                </div>
+                <div class="clock-footer">
+                    <span class="heart">❤️</span>
+                    <strong>For the love of Mother Earth.</strong>
+                    <span>Uproot your community today.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header fade-up">
+                    <h2>Everything your community needs</h2>
+                    <p>From forming groups to planning service projects — Uproot makes it simple and joyful.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card fade-up">
+                        <div class="feature-icon"><i class="fas fa-people-group"></i></div>
+                        <h3>Form groups instantly</h3>
+                        <p>Create public or private groups for your block, hobby, or cause. Invite neighbors and start collaborating in seconds.</p>
+                    </div>
+                    <div class="feature-card fade-up">
+                        <div class="feature-icon"><i class="fas fa-calendar-plus"></i></div>
+                        <h3>Plan events easily</h3>
+                        <p>Schedule meetups, cleanups, or potlucks. RSVP tracking, reminders, and volunteer shifts built right in.</p>
+                    </div>
+                    <div class="feature-card fade-up">
+                        <div class="feature-icon"><i class="fas fa-hand-sparkles"></i></div>
+                        <h3>Organize service</h3>
+                        <p>Coordinate food drives, tutoring, or park restoration. Match volunteers with causes they care about.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section container fade-up">
+            <div class="cta-box">
+                <div class="cta-content">
+                    <h2>Ready to plant roots and grow?</h2>
+                    <p>Join a growing movement of communities using Uproot to connect, serve, and make a difference.</p>
+                </div>
+                <div class="cta-actions">
+                    <a href="/register" class="btn btn-white">Get started — it's free</a>
+                    <a href="/login" class="btn btn-ghost">Log in</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo" style="font-size: 1.6rem;">
+                        <i class="fas fa-seedling"></i>
+                        <span>Uproot</span>
+                    </a>
+                    <p>Building stronger neighborhoods and a healthier planet, one group at a time.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <a href="#what">What is Uproot</a>
+                    <a href="#why">Why Uproot</a>
+                    <a href="#features">Features</a>
+                    <a href="/register">Sign up</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <a href="#">Blog</a>
+                    <a href="#">Climate guides</a>
+                    <a href="#">Help center</a>
+                    <a href="#">Community stories</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="#">About us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Uproot. All rights reserved. Made with <i class="fas fa-heart" style="color: #0f6b4b;"></i> for communities and the planet.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // ---------- COUNTDOWN ----------
+            const targetDate = new Date('2030-01-01T00:00:00').getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    const cd = document.getElementById('countdown');
+                    if (cd) {
+                        cd.innerHTML = '<div style="font-size:2rem;font-weight:800;color:#4cd69a;grid-column:1/-1;">The time is now.</div>';
+                    }
+                    return;
+                }
+
+                const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 365.25));
+                const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                const yEl = document.getElementById('years');
+                const dEl = document.getElementById('days');
+                const hEl = document.getElementById('hours');
+                const mEl = document.getElementById('minutes');
+                const sEl = document.getElementById('seconds');
+
+                if (yEl) yEl.textContent = String(years).padStart(2, '0');
+                if (dEl) dEl.textContent = String(days).padStart(3, '0');
+                if (hEl) hEl.textContent = String(hours).padStart(2, '0');
+                if (mEl) mEl.textContent = String(minutes).padStart(2, '0');
+                if (sEl) sEl.textContent = String(seconds).padStart(2, '0');
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // ---------- FADE-UP ANIMATIONS ----------
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-up').forEach(el => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+
+            // ---------- AUTH-AWARE HEADER ----------
+            // If the user is already logged in, swap the header buttons
+            // to a single "Dashboard" button. Uses dynamic import so the
+            // landing page still works if Firebase fails to load.
+            import("./firebase-config.js")
+                .then(async ({ auth }) => {
+                    const { onAuthStateChanged } = await import(
+                        "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"
+                    );
+
+                    onAuthStateChanged(auth, (user) => {
+                        const navActions = document.querySelector('.nav-actions');
+                        if (!navActions) return;
+
+                        if (user) {
+                            navActions.innerHTML = `
+                                <a href="/dashboard" class="btn btn-primary" style="padding: 10px 22px;">
+                                    <i class="fas fa-house"></i> Dashboard
+                                </a>
+                            `;
+                        }
+                    });
+                })
+                .catch(() => {
+                    // Silent fail — landing page still works without Firebase
+                });
+        })();
+    </script>
+</body>
+</html>
