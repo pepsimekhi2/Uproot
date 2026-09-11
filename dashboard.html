@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uproot • Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f2f6f4; color: #0d1c2b;
+            line-height: 1.5; -webkit-font-smoothing: antialiased;
+        }
+        .app {
+            display: grid; grid-template-columns: 250px 1fr 300px;
+            max-width: 1440px; margin: 0 auto; min-height: 100vh;
+        }
+        /* ---- SIDEBAR ---- */
+        .sidebar {
+            padding: 22px 14px; position: sticky; top: 0;
+            height: 100vh; overflow-y: auto;
+            background: #ffffff; border-right: 1px solid #e6eeea;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .sidebar-logo {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 1.35rem; font-weight: 800;
+            color: #0d1c2b; text-decoration: none; padding: 6px 12px; margin-bottom: 14px;
+        }
+        .sidebar-logo i { color: #0f6b4b; font-size: 1.5rem; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px; border-radius: 12px;
+            text-decoration: none; color: #3f5568;
+            font-weight: 500; font-size: 0.9rem; transition: all 0.2s;
+            position: relative;
+        }
+        .nav-item:hover { background: #f0f7f4; color: #0f6b4b; }
+        .nav-item.active { background: #e9f3ef; color: #0f6b4b; font-weight: 600; }
+        .nav-item i { font-size: 1.05rem; width: 20px; text-align: center; color: #8fa3b3; }
+        .nav-item.active i, .nav-item:hover i { color: #0f6b4b; }
+        .nav-item .badge {
+            margin-left: auto; background: #0f6b4b; color: white;
+            font-size: 0.62rem; font-weight: 700;
+            padding: 2px 7px; border-radius: 20px;
+        }
+        .sidebar-divider { height: 1px; background: #e6eeea; margin: 10px 8px; }
+        .sidebar-user {
+            margin-top: auto; display: flex; align-items: center; gap: 10px;
+            padding: 10px; border-radius: 14px;
+            background: #f7fbf9; border: 1px solid #e6eeea; cursor: pointer;
+        }
+        .sidebar-user:hover { background: #f0f7f4; }
+        .user-avatar {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: linear-gradient(135deg, #0f6b4b, #4cd69a);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+        }
+        .user-info { flex: 1; min-width: 0; }
+        .user-info .name {
+            font-size: 0.85rem; font-weight: 700; color: #0d1c2b;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .user-info .handle {
+            font-size: 0.72rem; color: #8fa3b3;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        /* ---- MAIN FEED ---- */
+        .main-feed {
+            padding: 22px 26px; max-width: 640px; width: 100%; margin: 0 auto;
+        }
+        .feed-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px; gap: 14px;
+        }
+        .feed-header h1 { font-size: 1.4rem; font-weight: 800; }
+        .composer {
+            background: white; border-radius: 18px; padding: 18px;
+            margin-bottom: 18px; border: 1px solid #e6eeea;
+        }
+        .composer-top { display: flex; gap: 10px; margin-bottom: 14px; }
+        .composer-avatar {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: linear-gradient(135deg, #0f6b4b, #4cd69a);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 0.95rem; flex-shrink: 0;
+        }
+        .composer-input {
+            flex: 1; border: 1px solid #e6eeea; outline: none;
+            font-family: 'Inter', sans-serif; font-size: 0.95rem;
+            color: #0d1c2b; background: #f7fbf9;
+            border-radius: 12px; padding: 11px 14px;
+            resize: none; min-height: 46px;
+        }
+        .composer-input:focus {
+            border-color: #0f6b4b; background: white;
+            box-shadow: 0 0 0 4px rgba(15, 107, 75, 0.06);
+        }
+        .composer-actions {
+            display: flex; align-items: center; justify-content: space-between;
+            padding-top: 10px; border-top: 1px solid #f0f4f2;
+        }
+        .post-btn {
+            padding: 9px 22px; border-radius: 30px; border: none;
+            background: #0f6b4b; color: white;
+            font-family: 'Inter', sans-serif; font-size: 0.86rem;
+            font-weight: 700; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 12px -4px rgba(15, 107, 75, 0.4);
+        }
+        .post-btn:hover { background: #0b553b; transform: translateY(-1px); }
+        .post-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .post-card {
+            background: white; border-radius: 18px; padding: 18px;
+            margin-bottom: 14px; border: 1px solid #e6eeea;
+            transition: all 0.25s;
+        }
+        .post-card:hover {
+            box-shadow: 0 12px 28px -12px rgba(15, 107, 75, 0.12);
+            border-color: #d0e2da;
+        }
+        .post-header {
+            display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;
+        }
+        .post-avatar {
+            width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+            background: linear-gradient(135deg, #0f6b4b, #4cd69a);
+        }
+        .post-meta { flex: 1; min-width: 0; }
+        .post-author { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .post-author .name { font-size: 0.9rem; font-weight: 700; }
+        .post-author .handle { font-size: 0.75rem; color: #8fa3b3; }
+        .post-time { font-size: 0.75rem; color: #8fa3b3; margin-top: 2px; }
+        .post-content {
+            font-size: 0.93rem; color: #2f3e4e;
+            line-height: 1.6; margin-bottom: 12px; white-space: pre-wrap;
+        }
+        .post-actions {
+            display: flex; align-items: center; gap: 4px;
+            padding-top: 10px; border-top: 1px solid #f0f4f2;
+        }
+        .action-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 12px; border-radius: 10px;
+            border: none; background: transparent; color: #5d6f7f;
+            font-family: 'Inter', sans-serif; font-size: 0.8rem;
+            font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .action-btn:hover { background: #f0f7f4; color: #0f6b4b; }
+        .action-btn.liked { color: #e74c3c; }
+        .action-btn i { font-size: 0.95rem; }
+        /* ---- RIGHT SIDEBAR ---- */
+        .right-sidebar {
+            padding: 22px 14px; position: sticky; top: 0;
+            height: 100vh; overflow-y: auto;
+            background: #ffffff; border-left: 1px solid #e6eeea;
+            display: flex; flex-direction: column; gap: 18px;
+        }
+        .widget {
+            background: #f7fbf9; border-radius: 18px;
+            padding: 16px; border: 1px solid #e6eeea;
+        }
+        .widget-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .widget-header h3 {
+            font-size: 0.9rem; font-weight: 700;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .widget-header h3 i { color: #0f6b4b; }
+        .widget-header a {
+            font-size: 0.75rem; color: #0f6b4b;
+            font-weight: 600; text-decoration: none;
+        }
+        .countdown-widget {
+            background: linear-gradient(160deg, #0d1c2b, #0f2b1f);
+            border-radius: 18px; padding: 18px; color: white;
+        }
+        .countdown-widget .widget-label {
+            font-size: 0.65rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: #4cd69a; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .countdown-widget .big-number {
+            font-size: 2.2rem; font-weight: 900;
+            letter-spacing: -1px; line-height: 1;
+            color: #4cd69a; font-variant-numeric: tabular-nums;
+        }
+        .countdown-widget .big-number span {
+            font-size: 0.95rem; font-weight: 600;
+            color: #7a9aaa; margin-left: 4px;
+        }
+        .countdown-widget .widget-sub {
+            font-size: 0.75rem; color: #7a9aaa; margin-top: 8px;
+        }
+        .right-footer {
+            font-size: 0.7rem; color: #8fa3b3;
+            line-height: 1.8; padding: 0 4px;
+        }
+        .right-footer a {
+            color: #8fa3b3; text-decoration: none; margin-right: 6px;
+        }
+        .empty-state {
+            text-align: center; padding: 40px 20px;
+            color: #8fa3b3; font-size: 0.9rem;
+        }
+        .empty-state i {
+            font-size: 2.5rem; margin-bottom: 12px;
+            color: #d0e2da; display: block;
+        }
+        .loading {
+            text-align: center; padding: 30px;
+            color: #8fa3b3; font-size: 0.85rem;
+        }
+        @media (max-width: 1100px) {
+            .app { grid-template-columns: 70px 1fr 260px; }
+            .sidebar-logo span, .nav-item span, .sidebar-user .user-info { display: none; }
+            .sidebar-logo, .nav-item { justify-content: center; }
+            .nav-item .badge { position: absolute; top: 4px; right: 4px; margin: 0; }
+            .sidebar-user { justify-content: center; }
+        }
+        @media (max-width: 860px) {
+            .app { grid-template-columns: 1fr; }
+            .sidebar, .right-sidebar { display: none; }
+            .main-feed { padding: 16px; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <a href="/" class="sidebar-logo"><i class="fas fa-seedling"></i><span>Uproot</span></a>
+            <a href="#" class="nav-item active"><i class="fas fa-house"></i><span>Home</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-compass"></i><span>Explore</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-people-group"></i><span>My Groups</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-calendar-check"></i><span>Events</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-hand-holding-heart"></i><span>Service</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-bell"></i><span>Notifications</span></a>
+            <div class="sidebar-divider"></div>
+            <a href="#" class="nav-item"><i class="fas fa-gear"></i><span>Settings</span></a>
+            <div class="sidebar-user" onclick="handleLogout()">
+                <div class="user-avatar" id="sidebarAvatar">--</div>
+                <div class="user-info">
+                    <div class="name" id="sidebarName">Loading...</div>
+                    <div class="handle" id="sidebarHandle">@—</div>
+                </div>
+                <i class="fas fa-arrow-right-from-bracket" style="color:#8fa3b3;font-size:0.8rem;"></i>
+            </div>
+        </aside>
+
+        <main class="main-feed">
+            <div class="feed-header">
+                <h1>Home</h1>
+            </div>
+
+            <div class="composer">
+                <div class="composer-top">
+                    <div class="composer-avatar" id="composerAvatar">--</div>
+                    <textarea class="composer-input" id="composerInput" placeholder="Share an update with your community..." rows="2"></textarea>
+                </div>
+                <div class="composer-actions">
+                    <div></div>
+                    <button class="post-btn" id="postBtn" disabled>Post</button>
+                </div>
+            </div>
+
+            <div id="feed">
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading posts...</div>
+            </div>
+        </main>
+
+        <aside class="right-sidebar">
+            <div class="countdown-widget">
+                <div class="widget-label"><i class="fas fa-clock"></i> Climate Countdown</div>
+                <div class="big-number" id="widgetCountdown">0000<span>days</span></div>
+                <div class="widget-sub">until the 2030 climate deadline</div>
+            </div>
+            <div class="widget">
+                <div class="widget-header"><h3><i class="fas fa-users"></i> Your Profile</h3></div>
+                <div id="profileSummary" style="font-size:0.85rem;color:#5d6f7f;line-height:1.7;">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                </div>
+            </div>
+            <div class="right-footer">
+                <a href="#">About</a><a href="#">Help</a><a href="#">Privacy</a><a href="#">Terms</a>
+                <br>© 2025 Uproot
+            </div>
+        </aside>
+    </div>
+
+    <script type="module">
+        import {
+            auth, db,
+            doc, getDoc, setDoc, addDoc, collection,
+            query, orderBy, limit, onSnapshot, serverTimestamp,
+            updateDoc, deleteDoc, arrayUnion, arrayRemove, increment
+        } from "./firebase-config.js";
+        import {
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        let currentUser = null;
+        let currentProfile = null;
+        let postsUnsub = null;
+
+        // ---------- AUTH GUARD ----------
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.replace("/login");
+                return;
+            }
+            currentUser = user;
+
+            try {
+                const snap = await getDoc(doc(db, "users", user.uid));
+                if (!snap.exists() || !snap.data().profileComplete) {
+                    window.location.replace("/register");
+                    return;
+                }
+                currentProfile = snap.data();
+                renderUser();
+                renderProfileSummary();
+                subscribeToPosts();
+            } catch (err) {
+                console.error("Profile load error:", err);
+                window.location.replace("/register");
+            }
+        });
+
+        function initialsFrom(name) {
+            if (!name) return "--";
+            return name.split(" ").map(p => p[0]).slice(0, 2).join("").toUpperCase();
+        }
+
+        function renderUser() {
+            const name = currentProfile.displayName || currentUser.displayName || "Uproot User";
+            const handle = "@" + (currentProfile.email ? currentProfile.email.split("@")[0] : "user");
+            const initials = initialsFrom(name);
+
+            document.getElementById('sidebarName').textContent = name;
+            document.getElementById('sidebarHandle').textContent = handle;
+            document.getElementById('sidebarAvatar').textContent = initials;
+            document.getElementById('composerAvatar').textContent = initials;
+        }
+
+        function renderProfileSummary() {
+            const p = currentProfile;
+            const interests = (p.interests || []).slice(0, 5).map(i =>
+                `<span style="display:inline-block;background:#e9f3ef;color:#0f6b4b;font-size:0.72rem;font-weight:600;padding:3px 9px;border-radius:20px;margin:2px 3px 2px 0;">${escapeHtml(i)}</span>`
+            ).join('') || '<em>No interests yet</em>';
+
+            const location = p.location
+                ? `${p.location.city || ""}, ${p.location.state || ""}`
+                : "—";
+
+            document.getElementById('profileSummary').innerHTML = `
+                <div style="margin-bottom:10px;"><strong style="color:#0d1c2b;">${escapeHtml(p.displayName || "")}</strong></div>
+                <div style="margin-bottom:10px;font-size:0.8rem;"><i class="fas fa-location-dot" style="color:#0f6b4b;margin-right:6px;"></i>${escapeHtml(location)}</div>
+                <div style="margin-bottom:6px;font-size:0.78rem;color:#8fa3b3;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Interests</div>
+                <div>${interests}</div>
+            `;
+        }
+
+        function escapeHtml(s) {
+            if (s == null) return "";
+            return String(s).replace(/[&<>"']/g, c => ({
+                "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+            })[c]);
+        }
+
+        // ---------- POSTS ----------
+        const composerInput = document.getElementById('composerInput');
+        const postBtn = document.getElementById('postBtn');
+
+        composerInput.addEventListener('input', () => {
+            postBtn.disabled = composerInput.value.trim().length === 0;
+        });
+
+        postBtn.addEventListener('click', async () => {
+            const content = composerInput.value.trim();
+            if (!content || !currentUser) return;
+
+            postBtn.disabled = true;
+            postBtn.textContent = 'Posting...';
+
+            try {
+                await addDoc(collection(db, "posts"), {
+                    content,
+                    authorId: currentUser.uid,
+                    authorName: currentProfile.displayName || currentUser.displayName || "Uproot User",
+                    createdAt: serverTimestamp(),
+                    likes: []
+                });
+                composerInput.value = '';
+                postBtn.textContent = 'Post';
+            } catch (err) {
+                console.error(err);
+                alert("Failed to post. Check your Firestore rules.");
+                postBtn.textContent = 'Post';
+                postBtn.disabled = false;
+            }
+        });
+
+        function subscribeToPosts() {
+            const q = query(
+                collection(db, "posts"),
+                orderBy("createdAt", "desc"),
+                limit(50)
+            );
+
+            postsUnsub = onSnapshot(q, (snapshot) => {
+                const feed = document.getElementById('feed');
+                if (snapshot.empty) {
+                    feed.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-seedling"></i>
+                            <p>No posts yet. Be the first to share something with your community!</p>
+                        </div>`;
+                    return;
+                }
+
+                const posts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                feed.innerHTML = posts.map(renderPost).join('');
+                attachPostHandlers();
+            }, (err) => {
+                console.error("Posts listener error:", err);
+                document.getElementById('feed').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <p>Couldn't load posts. Check Firestore rules.</p>
+                    </div>`;
+            });
+        }
+
+        function renderPost(post) {
+            const initials = initialsFrom(post.authorName || "Uproot User");
+            const likes = Array.isArray(post.likes) ? post.likes : [];
+            const liked = currentUser && likes.includes(currentUser.uid);
+            const time = formatTime(post.createdAt);
+            const safeContent = escapeHtml(post.content).replace(/\n/g, "<br>");
+
+            return `
+                <article class="post-card" data-post-id="${post.id}">
+                    <div class="post-header">
+                        <div class="post-avatar">${initials}</div>
+                        <div class="post-meta">
+                            <div class="post-author">
+                                <span class="name">${escapeHtml(post.authorName || "Uproot User")}</span>
+                            </div>
+                            <div class="post-time">${time}</div>
+                        </div>
+                    </div>
+                    <div class="post-content">${safeContent}</div>
+                    <div class="post-actions">
+                        <button class="action-btn like-btn ${liked ? 'liked' : ''}" data-post-id="${post.id}">
+                            <i class="${liked ? 'fas' : 'far'} fa-heart"></i>
+                            <span class="count">${likes.length}</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="far fa-comment"></i>
+                        </button>
+                        <button class="action-btn">
+                            <i class="far fa-share-from-square"></i>
+                        </button>
+                    </div>
+                </article>`;
+        }
+
+        function attachPostHandlers() {
+            document.querySelectorAll('.like-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const postId = btn.dataset.postId;
+                    const postRef = doc(db, "posts", postId);
+                    const snap = await getDoc(postRef);
+                    if (!snap.exists()) return;
+                    const likes = snap.data().likes || [];
+                    const isLiked = likes.includes(currentUser.uid);
+
+                    try {
+                        await updateDoc(postRef, {
+                            likes: isLiked ? arrayRemove(currentUser.uid) : arrayUnion(currentUser.uid)
+                        });
+                    } catch (err) {
+                        console.error("Like failed:", err);
+                    }
+                });
+            });
+        }
+
+        function formatTime(ts) {
+            if (!ts) return "just now";
+            const d = ts.toDate ? ts.toDate() : new Date(ts);
+            const diff = (Date.now() - d.getTime()) / 1000;
+            if (diff < 60) return "just now";
+            if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+            if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+            return d.toLocaleDateString();
+        }
+
+        // ---------- LOGOUT ----------
+        window.handleLogout = async function () {
+            if (!confirm("Log out of Uproot?")) return;
+            if (postsUnsub) postsUnsub();
+            await signOut(auth);
+            window.location.replace("/login");
+        };
+
+        // ---------- COUNTDOWN ----------
+        function updateCountdown() {
+            const target = new Date('2030-01-01T00:00:00').getTime();
+            const distance = target - Date.now();
+            if (distance < 0) {
+                document.getElementById('widgetCountdown').innerHTML = 'NOW';
+                return;
+            }
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById('widgetCountdown').innerHTML = `${days}<span>days</span>`;
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 60000);
+    </script>
+</body>
+</html>
